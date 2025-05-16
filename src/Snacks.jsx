@@ -11,18 +11,33 @@ function Snacks() {
 
   const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
-  const [priceRange, setPriceRange] = useState('all'); // ✅ Added priceRange state
+  // Change priceRange state to an array of checked price ranges
+  const [priceRanges, setPriceRanges] = useState([]);
 
-  // ✅ Filter function based on price
-  const filterByPrice = (product) => {
-    if (priceRange === '0-200') return product.price >= 0 && product.price <= 200;
-    if (priceRange === '201-400') return product.price >= 201 && product.price <= 400;
-    if (priceRange === '401-600') return product.price >= 401 && product.price <= 600;
-    return true; // for 'all'
+  // Toggle price range checkbox checked state
+  const handleCheckboxChange = (range) => {
+    setCurrentPage(1); // reset to page 1 on filter change
+    setPriceRanges((prev) =>
+      prev.includes(range)
+        ? prev.filter(item => item !== range)
+        : [...prev, range]
+    );
   };
 
-  // ✅ Apply filter before pagination
+  // Filter products by priceRanges array — if empty, show all
+  const filterByPrice = (product) => {
+    if (priceRanges.length === 0) return true;
+
+    return priceRanges.some(range => {
+      if (range === '0-200') return product.price >= 0 && product.price <= 200;
+      if (range === '201-400') return product.price >= 201 && product.price <= 400;
+      if (range === '401-600') return product.price >= 401 && product.price <= 600;
+      return false;
+    });
+  };
+
   const filteredProducts = snacksProducts.filter(filterByPrice);
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
@@ -53,21 +68,39 @@ function Snacks() {
       <ToastContainer position="top-right" autoClose={2000} />
       <h1>Snacks Items</h1>
 
-      {/* Price Range Filter */}
-      <div className="filter">
-        <label>Filter by Price:</label>
-        <select
-          onChange={(e) => {
-            setPriceRange(e.target.value);
-            setCurrentPage(1); // Reset to first page when filter changes
-          }}
-          value={priceRange}
-        >
-          <option value="all">All</option>
-          <option value="0-200">₹0 - ₹200</option>
-          <option value="201-400">₹201 - ₹400</option>
-          <option value="401-600">₹401 - ₹600</option>
-        </select>
+      {/* Checkbox Price Range Filter */}
+      <div className="checkbox-filter">
+        <div className="filter-label">Filter by Price:</div>
+
+        <label className="filter-checkbox">
+          <input
+            type="checkbox"
+            value="0-200"
+            checked={priceRanges.includes('0-200')}
+            onChange={() => handleCheckboxChange('0-200')}
+          />
+          ₹0 - ₹200
+        </label>
+
+        <label className="filter-checkbox">
+          <input
+            type="checkbox"
+            value="201-400"
+            checked={priceRanges.includes('201-400')}
+            onChange={() => handleCheckboxChange('201-400')}
+          />
+          ₹201 - ₹400
+        </label>
+
+        <label className="filter-checkbox">
+          <input
+            type="checkbox"
+            value="401-600"
+            checked={priceRanges.includes('401-600')}
+            onChange={() => handleCheckboxChange('401-600')}
+          />
+          ₹401 - ₹600
+        </label>
       </div>
 
       <ol className="veg-list">{snacksListItems}</ol>

@@ -98,6 +98,7 @@ function App() {
       </nav>
 
       <Routes>
+          <Route path="/" element={<Home />} />
         <Route path="/Home" element={<Home />} />
         <Route path="/Veg" element={<Veg />} />
         <Route path="/NonVeg" element={<NonVeg />} />
@@ -109,7 +110,7 @@ function App() {
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} />
-        <Route path="/*" element={<FileNotFound />} />
+        <Route path="*" element={<FileNotFound />} />
       </Routes>
     </BrowserRouter>
   );

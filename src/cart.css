@@ -27,7 +27,7 @@
   border-radius: 12px;
   margin: 1rem 0;
   padding: 1rem;
-  box-shadow: 0 0 5px rgba(255, 217, 0, 0.5);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   justify-content: space-between;
 }
 
@@ -54,7 +54,7 @@
 }
 
 .cart-buttons button {
-  background: gold;
+  background:greenyellow;
   color: black;
   border: none;
   padding: 0.4rem 0.6rem;

@@ -8,17 +8,42 @@ import 'react-toastify/dist/ReactToastify.css';
 function Veg() {
   const vegProducts = useSelector(state => state.products.veg);
   const dispatch = useDispatch();
-  
+
   const itemPerPage = 8;
   const [currentpage, setCurrentPage] = useState(1);
-  const [priceRange, setPriceRange] = useState('all');
 
-  // Function to filter based on price
+  // Price ranges and their labels
+  const priceRanges = [
+    { id: '0-200', label: '₹0 - ₹200' },
+    { id: '201-400', label: '₹201 - ₹400' },
+    { id: '401-600', label: '₹401 - ₹600' },
+  ];
+
+  // State to track which price ranges are checked
+  const [selectedPrices, setSelectedPrices] = useState([]);
+
+  // Handle checkbox toggle
+  const handleCheckboxChange = (id) => {
+    setCurrentPage(1);
+    setSelectedPrices(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(price => price !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
+  };
+
+  // Filtering function based on selected price ranges
   const filterByPrice = (product) => {
-    if (priceRange === '0-200') return product.price >= 0 && product.price <= 200;
-    if (priceRange === '201-400') return product.price >= 201 && product.price <= 400;
-    if (priceRange === '401-600') return product.price >= 401 && product.price <= 600;
-    return true; // 'all'
+    if (selectedPrices.length === 0) return true; // no filter = show all
+
+    return selectedPrices.some(range => {
+      if (range === '0-200') return product.price >= 0 && product.price <= 200;
+      if (range === '201-400') return product.price >= 201 && product.price <= 400;
+      if (range === '401-600') return product.price >= 401 && product.price <= 600;
+      return false;
+    });
   };
 
   const filteredProducts = vegProducts.filter(filterByPrice);
@@ -47,20 +72,21 @@ function Veg() {
       <ToastContainer position="top-right" autoClose={2000} />
       <h1>Veg Items</h1>
 
-      {/* Price Range Filter */}
-      <div className="filter">
-  <label>Filter by Price:</label>
-  <select onChange={(e) => {
-    setPriceRange(e.target.value);
-    setCurrentPage(1);
-  }} value={priceRange}>
-    <option value="all">All</option>
-    <option value="0-200">₹0 - ₹200</option>
-    <option value="201-400">₹201 - ₹400</option>
-    <option value="401-600">₹401 - ₹600</option>
-  </select>
-</div>
-
+      {/* Checkbox Price Filter */}
+      <div className="filter checkbox-filter">
+        <span className="filter-label">Filter by Price:</span>
+        {priceRanges.map(({ id, label }) => (
+          <label key={id} className="filter-checkbox">
+            <input
+              type="checkbox"
+              value={id}
+              checked={selectedPrices.includes(id)}
+              onChange={() => handleCheckboxChange(id)}
+            />
+            {label}
+          </label>
+        ))}
+      </div>
 
       <ol className="veg-list">{vegListItems}</ol>
 

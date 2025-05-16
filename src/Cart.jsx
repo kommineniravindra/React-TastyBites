@@ -187,7 +187,7 @@ function Cart() {
       ) : (
         <div className="cart-main">
           <div className="cart-items-container">
-            <h1>😋 Welcome 😋</h1>
+            <h1>😋Welcome😋</h1>
             <div className="cart-items-wrapper">
               <ol>
                 {cartItems.map((item, idx) => (
