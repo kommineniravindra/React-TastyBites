@@ -1,0 +1,146 @@
+/* 🌐 Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: #000;
+  padding: 10px 15px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  gap: 8px;
+  white-space: nowrap;
+  overflow-x: hidden;    /* hide horizontal scroll */
+  overflow-y: hidden;    /* hide vertical scroll */
+  scrollbar-width: none;
+  flex-wrap: nowrap;
+  max-height: 50px;       /* fixed max height to avoid vertical overflow */
+  box-sizing: border-box; /* includes padding in height */
+}
+
+/* 🌟 Brand Name */
+.brand-name {
+  font-size: 22px;
+  font-weight: 700;
+  background: linear-gradient(45deg, #FFD700, #FFA500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  margin-right: 12px;
+  flex-shrink: 0;
+  min-width: 160px;
+  line-height: 1;         /* avoid extra height */
+}
+
+/* 🔗 Navigation Links */
+.nav-links {
+  display: flex;
+  gap: 10px;
+  color: white;
+  flex-shrink: 1;
+  min-width: auto;
+  white-space: nowrap;
+  overflow-x: hidden;
+  overflow-y: hidden;     /* prevent vertical scroll */
+  line-height: 1;
+}
+
+/* Each nav link */
+.nav-link {
+  position: relative;
+  color: #eee;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 5px 8px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Hover effect */
+.nav-link:hover {
+  color: black;
+  background-color: #111;
+  transform: scale(1.05);
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
+}
+
+/* Underline on hover */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* 👤 Account Dropdown */
+.auth-options {
+  flex-shrink: 0;
+  min-width: 140px;
+  line-height: 1;
+}
+
+.account-select {
+  background-color: #111;
+  color: #FFD700;
+  border: 2px solid #FFD700;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-weight: bold;
+  font-size: 14px;
+  outline: none;
+  appearance: none;
+  background-position: right 10px center;
+  background-size: 12px;
+  padding-right: 28px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+  line-height: 1;
+}
+
+.account-select:hover {
+  background-color: #222;
+  color: #FFA500;
+  border-color: #FFA500;
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 600px) {
+  .navbar {
+    padding: 8px 10px;
+    gap: 6px;
+    max-height: 45px;
+  }
+
+  .nav-links {
+    gap: 6px;
+  }
+
+  .brand-name {
+    font-size: 18px;
+    min-width: 120px;
+    margin-right: 10px;
+  }
+
+  .auth-options {
+    min-width: 120px;
+  }
+
+  .nav-link {
+    padding: 4px 6px;
+    font-size: 14px;
+  }
+
+  .account-select {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+}

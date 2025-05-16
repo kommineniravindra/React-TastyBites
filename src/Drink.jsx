@@ -1,0 +1,93 @@
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from './store';
+import './vegstyle.css';
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
+function Drink() {
+  const drinkProducts = useSelector(state => state.products.drinks);
+  const dispatch = useDispatch();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [priceRange, setPriceRange] = useState('all');
+  const itemsPerPage = 8;
+
+  // ✅ Filter logic
+  const filterByPrice = (product) => {
+    if (priceRange === '0-200') return product.price >= 0 && product.price <= 200;
+    if (priceRange === '201-400') return product.price >= 201 && product.price <= 400;
+    if (priceRange === '401-600') return product.price >= 401 && product.price <= 600;
+    return true; // 'all'
+  };
+
+  const filteredProducts = drinkProducts.filter(filterByPrice);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const goToPage = (page) => {
+    setCurrentPage(page);
+  };
+
+  const drinkListItems = currentItems.map((product, index) => (
+    <li key={index}>
+      <img src={product.image} alt={product.name} />
+      <div className="product-name">{product.name}</div>
+      <div className="product-price">₹{product.price}</div>
+      <button onClick={() => {
+        dispatch(addToCart(product));
+        toast.success(`${product.name} added to cart!`);
+      }}>
+        Add to Cart
+      </button>
+    </li>
+  ));
+
+  return (
+    <div className="veg-container">
+      <ToastContainer position="top-right" autoClose={2000} />
+      <h1>Drinks Items</h1>
+
+      {/* ✅ Price Filter */}
+      <div className="filter">
+        <label>Filter by Price:</label>
+        <select
+          onChange={(e) => {
+            setPriceRange(e.target.value);
+            setCurrentPage(1); // reset page when filter changes
+          }}
+          value={priceRange}
+        >
+          <option value="all">All</option>
+          <option value="0-200">₹0 - ₹200</option>
+          <option value="201-400">₹201 - ₹400</option>
+          <option value="401-600">₹401 - ₹600</option>
+        </select>
+      </div>
+
+      <ol className="veg-list">{drinkListItems}</ol>
+
+      <div className="pagination">
+        <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
+          Prev
+        </button>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => goToPage(index + 1)}
+            className={currentPage === index + 1 ? "active" : ""}
+          >
+            {index + 1}
+          </button>
+        ))}
+        <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
+          Next
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default Drink;

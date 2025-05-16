@@ -1,0 +1,272 @@
+
+
+.poster-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #f4f4f4;
+}
+
+.poster-content {
+  display: flex;
+  flex-direction: row;
+  max-width: 1200px;
+  gap: 30px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.poster-text {
+  flex: 1;
+}
+
+.poster-text h1 {
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.poster-text p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.poster-image img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 20px;
+}
+
+/* General Body Styling */
+.home-page {
+  background-color: #1a1a1a; /* Dark gray background */
+  color: #fff; /* White text for readability */
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  padding: 3rem 2rem;
+  overflow: hidden;
+}
+
+/* Image Carousel */
+.image-carousel {
+  overflow: hidden;
+  padding: 2rem 0;
+  margin-top: 2rem;
+}
+
+.marquee {
+  font-size: 0;
+}
+
+.marquee img {
+  width: 125px;
+  height: 125px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 2rem;
+  border: 3px solid #f5a623; /* Gold border */
+}
+
+.home-container {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.home-card h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  color: #f5a623; /* Gold color */
+}
+
+.home-card img {
+  width: 80%;
+  border-radius: 10px;
+  border: #f5a623 solid;
+  box-shadow: 0px 6px 12px gold;
+}
+
+/* About Us Section */
+.about-us {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.about-us h2 {
+  font-size: 2.5rem;
+  color: #f5a623; /* Gold */
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.about-us p {
+  font-size: 1.2rem;
+  color: #ddd;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* Menu Section */
+.menu-section {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.menu-section h2 {
+  font-size: 2.5rem;
+  color: #f5a623; /* Gold */
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.menu-items {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.menu-item {
+  background-color: #2d2d2d; /* Slightly lighter than background */
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  width: 250px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.menu-item:hover {
+  transform: scale(1.05);
+}
+
+.menu-item img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+}
+
+.menu-item h3 {
+  font-size: 1.6rem;
+  color: #f5a623;
+  margin-bottom: 0.5rem;
+}
+
+.menu-item p {
+  color: #ddd;
+}
+
+/* Testimonials Section */
+.testimonials {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.testimonials h2 {
+  font-size: 2.5rem;
+  color: #f5a623; /* Gold */
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.testimonial {
+  margin-bottom: 2rem;
+}
+
+.testimonial p {
+  font-style: italic;
+  color: #ddd;
+}
+
+.testimonial h4 {
+  color: #f5a623;
+  font-weight: bold;
+}
+
+
+/* Call to Action Section */
+.cta {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.cta h2 {
+  font-size: 2.5rem;
+  color: #f5a623; /* Gold */
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.cta button {
+  padding: 1rem 2rem;
+  background-color: #f5a623;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cta button:hover {
+  background-color: #d4891a; /* Darker gold on hover */
+}
+
+/* Circular Image Gallery */
+.image-gallery {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 3rem 0;
+}
+
+.circle-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #f5a623; /* Gold border */
+  transition: transform 0.3s;
+}
+
+.circle-img:hover {
+  transform: scale(1.1);
+}
+
+/* Features Section */
+.features-section {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.features-section h2 {
+  font-size: 2.5rem;
+  color: #f5a623;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.features-section ul {
+  list-style-type: none;
+  padding: 0;
+  color: #ddd;
+  font-size: 1.5rem;
+}
+
+.features-section li {
+  margin: 1rem 0;
+}
+
+/* Global Typography */
+h2, h3 {
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+p, ul, li {
+  font-size: 1.2rem;
+  line-height: 1.8;
+}
+

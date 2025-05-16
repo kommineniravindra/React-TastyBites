@@ -1,0 +1,454 @@
+/* Global Container */
+.cart-container {
+  background: #ffffff;
+  color: #222;
+  min-height: 100vh;
+  margin-top: 50px;
+  margin-left: 100px;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Cart Layout */
+.cart-main {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Cart Item Layout */
+.cart-item {
+  display: flex;
+  align-items: center;
+  background: whitesmoke;
+  border-radius: 12px;
+  margin: 1rem 0;
+  padding: 1rem;
+  box-shadow: 0 0 5px rgba(255, 217, 0, 0.5);
+  justify-content: space-between;
+}
+
+.cart-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #ffd700;
+}
+
+.cart-details span {
+  font-weight: bold;
+  display: block;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-buttons {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.cart-buttons button {
+  background: gold;
+  color: black;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+.cart-buttons button:hover {
+  background: black;
+  color: gold;
+}
+
+.cart-quantity {
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0px;
+}
+
+/* Bill Summary Panel */
+.bill-summary-container {
+  flex: 1;
+  min-width: 300px;
+  background: #fff9e6;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+.bill-summary-container h2,
+.bill-summary-container h3 {
+  text-align: center;
+  color: #cc9e00;
+  font-weight: bold;
+}
+
+.bill-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.6rem 0;
+  font-size: 1rem;
+}
+
+.bill-row span {
+  color: #333;
+}
+
+.total-amount {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #008f4c;
+  margin-top: 1rem;
+}
+
+/* Discounts & Coupons */
+.discount-buttons button,
+.coupon-section button {
+  background: #003366;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  margin: 0.4rem 0.3rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.discount-buttons button:hover,
+.coupon-section button:hover {
+  background: #e5c100;
+  color: black;
+}
+
+.coupon-section input {
+  padding: 0.5rem;
+  border: 1px solid #aaa;
+  background: #f9f9f9;
+  color: #000;
+  margin-right: 0.5rem;
+  border-radius: 6px;
+  width: 65%;
+}
+
+/* Payment Buttons */
+.payment-method-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 1rem 0;
+}
+
+.payment-method-buttons button {
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  background: #1c1c1c;
+  color: #FFD700;
+  border: 1px solid #FFD700;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.payment-method-buttons button:hover {
+  transform: scale(1.08);
+}
+
+/* QR and Card Payment Sections */
+.qr-code-section,
+.card-payment-section {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.card-payment-section input {
+  width: 100%;
+  padding: 0.6rem;
+  margin: 0.4rem 0;
+  background: #fdfdfd;
+  color: #000;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Email Input Box */
+.email-box {
+  margin-top: 1.5rem;
+}
+
+.email-box input {
+  width: 100%;
+  padding: 0.6rem;
+  background: #fff;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 8px;
+}
+
+/* Complete Purchase Button */
+.complete-btn {
+  display: block;
+  width: 100%;
+  background: gold;
+  color: black;
+  padding: 0.9rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 1rem;
+}
+
+.complete-btn:hover {
+  background: #e5c100;
+}
+
+/* Empty cart */
+.empty-cart-container {
+  position: relative;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgb(77, 76, 76);
+  padding: 60px 40px;
+  text-align: center;
+  transform: scale(0.9);
+  animation: scaleIn 1s ease-out forwards;
+  max-width: 600px;
+  width: 100%;
+  z-index: 1;
+  margin-top: 70px;
+  transition: all 0.3s ease-in-out;
+}
+
+.empty-cart-container:hover {
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.2);
+  transform: scale(1.02);
+}
+
+h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  animation: textFadeIn 1.2s ease-out forwards;
+}
+
+h1 br {
+  display: block;
+  margin-top: 12px;
+}
+
+p {
+  font-size: 1.2rem;
+  color: #777;
+  font-weight: 300;
+  margin-top: 20px;
+  opacity: 0;
+  animation: fadeInText 1.5s 1s ease forwards;
+  max-width: 80%;
+  margin: 20px auto;
+}
+
+p:hover {
+  color: #444;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes textFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInText {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradientBackground {
+  0% {
+    background: linear-gradient(45deg, #ff4081, #1e88e5);
+  }
+  50% {
+    background: linear-gradient(45deg, #ff9800, #00bcd4);
+  }
+  100% {
+    background: linear-gradient(45deg, #ff4081, #1e88e5);
+  }
+}
+
+.empty-cart-container::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  background-image: url('/menu/img1.avif');
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: floatingIcon 2s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes floatingIcon {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-25px);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.empty-cart-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  z-index: -2;
+  opacity: 0.1;
+  border-radius: 20px;
+  animation: gradientBackground 5s ease-in-out infinite;
+}
+
+.empty-cart-container {
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.empty-cart-container:hover {
+  border-color: #6a11cb;
+}
+.thank-you-screen {
+  position: fixed; /* Cover the whole viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  background-color: #f8f9fa;
+  padding: 50px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  z-index: 1; /* Ensure it appears above all other elements */
+}
+
+.thank-you-screen h1 {
+  font-size: 2.5rem;
+  color: #28a745;
+  margin-bottom: 20px;
+}
+
+.thank-you-screen p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-top: 10px;
+}
+
+.blast {
+  animation: blastAnimation 1.5s ease-out;
+}
+
+@keyframes blastAnimation {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/*blast*/
+.confetti-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2; /* above background, below content */
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  opacity: 0.8;
+  animation: confettiFall 3s ease-out forwards;
+  border-radius: 2px;
+}
+
+.confetti:nth-child(2) { background-color: blue; left: 20%; animation-delay: 0.1s; }
+.confetti:nth-child(3) { background-color: yellow; left: 40%; animation-delay: 0.2s; }
+.confetti:nth-child(4) { background-color: green; left: 60%; animation-delay: 0.3s; }
+.confetti:nth-child(5) { background-color: orange; left: 80%; animation-delay: 0.4s; }
+.confetti:nth-child(6) { background-color: purple; left: 30%; animation-delay: 0.5s; }
+.confetti:nth-child(7) { background-color: pink; left: 50%; animation-delay: 0.6s; }
+.confetti:nth-child(8) { background-color: cyan; left: 70%; animation-delay: 0.7s; }
+
+@keyframes confettiFall {
+  0% {
+    top: -10px;
+    transform: rotate(0deg) scale(1);
+  }
+  100% {
+    top: 100%;
+    transform: rotate(720deg) scale(1.2);
+    opacity: 0;
+  }
+}

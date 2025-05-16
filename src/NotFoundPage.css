@@ -1,0 +1,103 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(255, 255, 255);
+  font-family: 'Segoe UI', sans-serif;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.notfound-bg {
+  margin-left: 274px;
+  height: 100vh;
+  width: 100%;  /* Changed from 300% to 100% */
+  background: linear-gradient(to bottom right, #ffffff, #ffffff);
+  color: #FFD700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.notfound-container {
+  text-align: center;
+  animation: fadeIn 1.5s ease-out;
+}
+
+.glow-404 {
+  color: #FFC700;
+  font-size: 120px;
+  font-weight: bold;
+  text-shadow: 0 0 20px #FFD700, 0 0 30px #FFC700;
+  animation: pulse 2s infinite;
+}
+
+.notfound-text {
+  color: black;
+  font-size: 24px;
+  margin: 5px 0 15px;
+  opacity: 0.9;
+}
+
+.animated-character img {
+  width: 180px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.notfound-home-btn {
+  margin-top: 20px;
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #FFD700;
+  color: black;
+  font-weight: bold;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.notfound-home-btn:hover {
+  background-color: #FFC700;
+  transform: scale(1.05);
+}
+
+/* Stars or gears floating in background */
+.floating-stars::before,
+.floating-stars::after {
+  content: '★';
+  position: absolute;
+  color: #FFD700;
+  font-size: 20px;
+  animation: floatStar 6s infinite linear;
+  opacity: 0.4;
+}
+
+.floating-stars::after {
+  content: '⚙️';
+  left: 70%;
+  top: 40%;
+  font-size: 24px;
+  animation-delay: 2s;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { text-shadow: 0 0 10px #FFD700; }
+  50% { text-shadow: 0 0 30px #FFD700; }
+  100% { text-shadow: 0 0 10px #FFD700; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes floatStar {
+  0% { transform: translateY(0) rotate(0deg); top: 20%; left: 10%; }
+  100% { transform: translateY(-100vh) rotate(360deg); top: 0; left: 80%; }
+}
