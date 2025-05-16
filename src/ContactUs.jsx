@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // Import AOS styles
-import './ContactUs.css';
+import './contactus.css';
 
-const ContactUs = () => {
+function ContactUs (){
   useEffect(() => {
     AOS.init({ duration: 1000, once: true }); // Animate once, 1s duration
   }, []);
