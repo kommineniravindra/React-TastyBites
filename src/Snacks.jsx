@@ -121,7 +121,31 @@ function Snacks() {
         <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
           Next
         </button>
+        
       </div>
+         <footer className="custom-footer">
+  <h2>Tasty Bite's</h2>
+  <p>
+   Our team is made up of professionals dedicated to excellence. We value collaboration, creativity, and commitment in everything we do.
+
+  </p>
+  <div className="social-icons">
+    <a href="#"><i className="fab fa-facebook-f"></i></a>
+    <a href="#"><i className="fab fa-twitter"></i></a>
+    <a href="#"><i className="fab fa-google-plus-g"></i></a>
+    <a href="#"><i className="fab fa-youtube"></i></a>
+    <a href="#"><i className="fab fa-linkedin-in"></i></a>
+  </div>
+  <div className="footer-bottom">
+    <p>&copy; {new Date().getFullYear()} <span className="brand">Tasty Bite's</span></p>
+    <div className="footer-links">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/blog">Blog</a>
+    </div>
+  </div>
+</footer>
     </div>
   );
 }

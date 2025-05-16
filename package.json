@@ -13,6 +13,7 @@
     "@emailjs/browser": "^4.4.1",
     "@react-hook/window-size": "^3.1.1",
     "@reduxjs/toolkit": "^2.7.0",
+    "aos": "^2.3.4",
     "bootstrap": "^5.3.6",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^12.10.5",

@@ -1,71 +1,61 @@
-import React from 'react';
-import './contactus.css';
+import React, { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // Import AOS styles
+import './ContactUs.css';
 
 const ContactUs = () => {
+  useEffect(() => {
+    AOS.init({ duration: 1000, once: true }); // Animate once, 1s duration
+  }, []);
+
   return (
-    <div className="contact-us">
-      {/* Header with form */}
-      <div className="contact-header">
-        <div className="overlay">
-          <div className="contact-text">
-            <h2>CONTACT US</h2>
-            <p>Need an expert? You are more than welcome to leave your contact info and we will be in touch shortly</p>
-          </div>
+    <div className="contact-container">
+      <div className="decor-left" data-aos="fade-right"></div>
+      <div className="decor-right" data-aos="fade-left"></div>
+
+      <section className="contact-content" data-aos="fade-up" data-aos-delay="200">
+        <h1 className="contact-title">CONTACT US</h1>
+        <p className="contact-subtext">
+          The assurance of a prompt response, and we will get back to you as soon as possible,
+          underscores attentiveness and commitment to addressing inquiries.
+        </p>
+
+        <div className="contact-box" data-aos="zoom-in" data-aos-delay="400">
+          <h2>Send Us Message</h2>
           <form className="contact-form">
-            <input type="text" placeholder="First Name" />
-            <input type="text" placeholder="Last Name" />
-            <input type="email" placeholder="Email Address" />
-            <textarea placeholder="Comments / Questions" rows="4"></textarea>
-            <button type="submit">SEND</button>
+            <div className="row">
+              <div className="input-group">
+                <label>First Name <span>*</span></label>
+                <input type="text" placeholder="First Name" required />
+              </div>
+              <div className="input-group">
+                <label>Last Name <span>*</span></label>
+                <input type="text" placeholder="Last Name" required />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="input-group">
+                <label>Email <span>*</span></label>
+                <input type="email" placeholder="Email" required />
+              </div>
+              <div className="input-group">
+                <label>Phone Number <span>*</span></label>
+                <input type="tel" placeholder="Phone" required />
+              </div>
+            </div>
+
+            <div className="input-group full">
+              <label>Description <span>*</span></label>
+              <textarea placeholder="Write Message . . ." required></textarea>
+            </div>
+
+            <div className="input-group full">
+              <button type="submit">Submit</button>
+            </div>
           </form>
         </div>
-      </div>
-
-      {/* Contact info */}
-      <div className="contact-info">
-        <div className="info-box">
-          <i className="fas fa-map-marker-alt"></i>
-          <h4>VISIT US</h4>
-          <p>London place street etc area,</p>
-          <p>Elizabeth, London, UK</p>
-        </div>
-        <div className="info-box">
-          <i className="fas fa-phone-alt"></i>
-          <h4>CALL US</h4>
-          <p>Elizabeth delivered data gain</p>
-          <p>+91 9603262008</p>
-        </div>
-        <div className="info-box">
-          <i className="fas fa-envelope"></i>
-          <h4>MASSAGE US</h4>
-          <p>Tasty</p>
-          <p>kommineniravindra99@gmail.com</p>
-        </div>
-      </div>
-
-      {/* Map */}
-      <div className="map-container">
-        <iframe
-          title="Google Map"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19809.043428360467!2d-0.13418425!3d51.509865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b3337f1b1fb%3A0x2af13c2b4ea86f9e!2sElizabeth%20Tower!5e0!3m2!1sen!2suk!4v1623497414022!5m2!1sen!2suk"
-          width="100%"
-          height="350"
-          style={{ border: 0 }}
-          allowFullScreen=""
-          loading="lazy"
-        ></iframe>
-      </div>
-
-      {/* Footer */}
-      <div className="contact-footer">
-        <h3>FOLLOW US</h3>
-        <div className="social-icons">
-          <i className="fab fa-facebook-f"></i>
-          <i className="fab fa-twitter"></i>
-          <i className="fab fa-google-plus-g"></i>
-          <i className="fab fa-linkedin-in"></i>
-        </div>
-      </div>
+      </section>
     </div>
   );
 };
