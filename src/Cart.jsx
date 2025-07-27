@@ -24,10 +24,11 @@ function Cart() {
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [couponCodeDiscount, setCouponCodeDiscount] = useState(0);
   const [appliedCoupon, setAppliedCoupon] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [showEmailInput, setShowEmailInput] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [purchaseComplete, setPurchaseComplete] = useState(false);
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(2);
 
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -41,7 +42,7 @@ function Cart() {
 
   useEffect(() => {
     if (purchaseComplete && countdown > 0) {
-      const timer = setTimeout(() => setCountdown((prev) => prev - 1), 5000);
+      const timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
       return () => clearTimeout(timer);
     }
     if (countdown === 0 && purchaseComplete) {
@@ -51,6 +52,8 @@ function Cart() {
 
   const handleCouponApply = () => {
     const code = couponCodeRef.current.value.trim().toUpperCase();
+
+    toast.info("Applying coupon...");
 
     if (appliedCoupon === code) {
       toast.info("Coupon already applied.");
@@ -90,9 +93,12 @@ function Cart() {
 
     if (!userEmail || !validateEmail(userEmail)) {
       toast.error("Please enter a valid email address.");
+      toast.warn("Email required for order confirmation.");
+      setShowEmailInput(true);
       return;
     }
 
+    toast.info("Processing your order...");
     setPurchaseComplete(true);
 
     const orderData = {
@@ -112,7 +118,7 @@ function Cart() {
     const itemDetailsString = cartItems
       .map(
         (item) =>
-          ` Item: ${item.name}\n  Quantity: ${item.quantity}\n Price: ₹${(
+          ` Item: ${item.name}\n Quantity: ${item.quantity}\n Price: ₹${(
             item.price * item.quantity
           ).toFixed(2)}`
       )
@@ -127,7 +133,7 @@ function Cart() {
       order_id: orderData.id,
       orders: JSON.stringify(formattedItems, null, 2),
       item_list: itemDetailsString,
-      shipping: "14.15",
+      shipping: "0.00",
       tax: taxAmount.toFixed(2),
       manual_discount: discountAmount.toFixed(2),
       coupon_discount: couponAmount.toFixed(2),
@@ -148,151 +154,157 @@ function Cart() {
         .then(() => {
           dispatch(orderDetails(orderData));
           dispatch(clearCart());
-          toast.success("Order successfully placed!");
+          toast.success("Order placed & confirmation email sent!");
         })
         .catch((err) => {
           console.error("❌ Email sending failed:", err);
-          toast.error("Failed to send confirmation email.");
+          toast.error("Failed to send email. Please try again.");
         });
     }, 500);
+  };
+
+  const handlePaymentMethodClick = (method) => {
+    setPaymentMethod((prevMethod) => {
+      const newMethod = prevMethod === method ? null : method;
+      toast.info(
+        newMethod ? `${newMethod.toUpperCase()} payment selected` : "Payment deselected"
+      );
+      return newMethod;
+    });
   };
 
   if (purchaseComplete) {
     return (
       <div className="thank-you-screen blast">
+        <ToastContainer position="top-right" autoClose={2000} />
         <h1>🎉 Thank you for your order!</h1>
         <p>Redirecting to your Orders page in {countdown} seconds...</p>
-        <div class="confetti-container">
-  <div class="confetti"></div>
-  <div class="confetti"></div>
-  <div class="confetti"></div>
-  <div class="confetti"></div>
-  <div class="confetti"></div>
-  <div class="confetti"></div>
-  <div class="confetti"></div>
-  <div class="confetti"></div>
-</div>
+        <div className="confetti-container">
+          {Array(8).fill().map((_, i) => (
+            <div className="confetti" key={i}></div>
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="cart-container">
+    <div className="cart-container-solo-stove">
       <ToastContainer position="top-right" autoClose={2000} />
+
       {cartItems.length === 0 ? (
         <div className="empty-cart-container">
-          <h1>🧺 <br></br>Empty Cart</h1>
+          <h1>🧺 <br />Empty Cart</h1>
           <p>Looks like you haven’t added anything to your cart yet.<br />Start shopping now!</p>
         </div>
       ) : (
-        <div className="cart-main">
-          <div className="cart-items-container">
-            <h1>😋Welcome😋</h1>
-            <div className="cart-items-wrapper">
-              <ol>
-                {cartItems.map((item, idx) => (
-                  <li key={idx} className="cart-item">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="cart-item-image"
-                    />
-                    <div className="cart-details">
-                      <span>{item.name}</span>
-                      <small>₹{item.price}</small>
-                    </div>
-                    <div className="cart-buttons">
-                      <button onClick={() => dispatch(incrementItem(item))}>
-                        +
-                      </button>
-                      <div className="cart-quantity">{item.quantity}</div>
-                      <button
-                        onClick={() =>
-                          item.quantity > 1
-                            ? dispatch(decrementItem(item))
-                            : dispatch(removeFromCart(item))
-                        }
-                      >
-                        -
-                      </button>
-                      <button
-                        onClick={() => {
-                          dispatch(removeFromCart(item));
-                          toast.error(`${item.name} removed from cart!`);
-                        }}
-                        style={{ color: "white", backgroundColor: "red" }}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </div>
+        <div className="cart-main-solo-stove">
+          <div className="cart-items-wrapper-solo-stove">
+            <h1>Your Cart ({cartItems.length} items)</h1>
+            {cartItems.map((item, idx) => (
+              <div key={idx} className="cart-item-solo-stove">
+                <img src={item.image} alt={item.name} className="cart-item-image-solo-stove" />
+                <div className="item-details-solo-stove">
+                  <div className="item-info-top">
+                    <span className="item-name-solo-stove">{item.name}</span>
+                    <span className="item-price-solo-stove">
+                      ₹{(item.price * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+                <div className="item-quantity-controls-solo-stove">
+                  <div className="quantity-box">
+                    <button onClick={() => dispatch(decrementItem(item))}>-</button>
+                    <span className="quantity-display">{item.quantity}</span>
+                    <button onClick={() => dispatch(incrementItem(item))}>+</button>
+                  </div>
+                  <button
+                    className="remove-item-solo-stove"
+                    onClick={() => {
+                      dispatch(removeFromCart(item));
+                      toast.error(`${item.name} removed from cart!`);
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
 
-          <div className="bill-summary-container">
-            <h2>🧾 Bill Summary</h2>
-            <hr />
-            <div className="bill-row">
-              <span>💰 Total Price:</span>
-              <span>₹{totalPrice.toFixed(2)}</span>
-            </div>
-            <div className="bill-row">
-              <span>🏷️ Manual Discount:</span>
-              <span>- ₹{discountAmount.toFixed(2)}</span>
-            </div>
-            <div className="bill-row">
-              <span>🎟️ Coupon Discount:</span>
-              <span>- ₹{couponAmount.toFixed(2)}</span>
+          <div className="order-summary-solo-stove">
+            <h2>Order Summary</h2>
+            <div className="summary-section">
+              <div className="summary-row"><span>Subtotal:</span><span>₹{totalPrice.toFixed(2)}</span></div>
+              <div className="summary-row"><span>Sales Tax:</span><span>₹{taxAmount.toFixed(2)}</span></div>
+              <div className="summary-row"><span>🏷️ Manual Discount:</span><span>- ₹{discountAmount.toFixed(2)}</span></div>
+              <div className="summary-row"><span>🎟️ Coupon Discount:</span><span>- ₹{couponAmount.toFixed(2)}</span></div>
             </div>
 
-            <div className="discount-buttons">
-              <button onClick={() => setDiscountPercentage(10)}>10% Discount</button>
-              <button onClick={() => setDiscountPercentage(20)}>20% Discount</button>
-              <button onClick={() => setDiscountPercentage(30)}>30% Discount</button>
+            <div className="discount-buttons-reintegrated">
+              <button onClick={() => { setDiscountPercentage(10); toast.success("10% manual discount applied."); }}>10% Discount</button>
+              <button onClick={() => { setDiscountPercentage(20); toast.success("20% manual discount applied."); }}>20% Discount</button>
+              <button onClick={() => { setDiscountPercentage(30); toast.success("30% manual discount applied."); }}>30% Discount</button>
             </div>
 
-            <div className="coupon-section">
-              <input
-                ref={couponCodeRef}
-                placeholder="Enter coupon code..."
-                disabled={!!appliedCoupon}
-              />
-              <button onClick={handleCouponApply}>Apply</button>
+            <div className="summary-row coupon-code-row-solo">
+              <span>Coupon Code:</span>
+              <div className="coupon-input-apply">
+                <input type="text" ref={couponCodeRef} placeholder="Enter coupon code" disabled={!!appliedCoupon} />
+                <a href="#" onClick={handleCouponApply}>Add Coupon</a>
+              </div>
             </div>
 
-            <div className="bill-row">
-              <span>⚖️ Tax (18%):</span>
-              <span>₹{taxAmount.toFixed(2)}</span>
-            </div>
-            <hr />
-            <div className="bill-row total-amount">
-              <strong>💵 Final Amount:</strong>
-              <strong>₹{finalAmount.toFixed(2)}</strong>
+            <div className="free-shipping-note">
+              Congrats, you're eligible for <strong>Free Shipping</strong>
             </div>
 
-            <h3>Select Payment Method</h3>
-            <div className="payment-method-buttons">
-              <button onClick={() => setPaymentMethod("qr")}>QR Code</button>
-              <button onClick={() => setPaymentMethod("card")}>Card</button>
+            <div className="summary-row grand-total-row">
+              <span>Grand total:</span>
+              <span>₹{finalAmount.toFixed(2)}</span>
+            </div>
+
+            <h3 className="email-heading">
+              Email for Confirmation
+              <button
+                className="toggle-details-btn"
+                onClick={() => {
+                  setShowEmailInput(!showEmailInput);
+                  toast.info(showEmailInput ? "Email input hidden" : "Email input shown");
+                }}
+              >
+                {showEmailInput ? "Hide Email" : "Show Email"}
+              </button>
+            </h3>
+
+            {showEmailInput && (
+              <div className="email-box-reintegrated">
+                <label>📧 Enter your Gmail:</label>
+                <input
+                  type="email"
+                  value={userEmail}
+                  onChange={(e) => setUserEmail(e.target.value)}
+                  placeholder="you@example.com"
+                />
+              </div>
+            )}
+
+            <h3 className="payment-method-heading">Select Payment Method</h3>
+            <div className="payment-method-buttons-reintegrated">
+              <button onClick={() => handlePaymentMethodClick("qr")} className={paymentMethod === "qr" ? "active" : ""}>QR Code</button>
+              <button onClick={() => handlePaymentMethodClick("card")} className={paymentMethod === "card" ? "active" : ""}>Card</button>
             </div>
 
             {paymentMethod === "qr" && (
-              <div className="qr-code-section">
+              <div className="qr-code-section-reintegrated">
                 <h4>Scan to Pay ₹{finalAmount.toFixed(2)}</h4>
-                <QRCode
-                  value={`upi://pay?pa=9603262008@ybl&pn=TASTYBITE'S&am=${finalAmount.toFixed(
-                    2
-                  )}&cu=INR`}
-                  size={150}
-                />
+                <QRCode value={`upi://pay?pa=9603262008@ybl&pn=TASTYBITE'S&am=${finalAmount.toFixed(2)}&cu=INR`} size={150} />
                 <p>UPI ID: 9603262008@ybl</p>
               </div>
             )}
 
             {paymentMethod === "card" && (
-              <div className="card-payment-section">
+              <div className="card-payment-section-reintegrated">
                 <input type="text" placeholder="Name on Card" />
                 <input type="text" placeholder="1234 5678 9012 3456" />
                 <input type="text" placeholder="MM/YY" />
@@ -300,17 +312,8 @@ function Cart() {
               </div>
             )}
 
-            <div className="email-box">
-              <label>📧 Enter your Gmail:</label>
-              <input
-                value={userEmail}
-                onChange={(e) => setUserEmail(e.target.value)}
-                placeholder="you@example.com"
-              />
-            </div>
-
-            <button className="complete-btn" onClick={handleCompletePurchase}>
-              🎉 Complete Purchase
+            <button className="checkout-btn" onClick={handleCompletePurchase}>
+              Check out
             </button>
           </div>
         </div>

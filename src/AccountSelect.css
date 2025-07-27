@@ -1,0 +1,63 @@
+/* Account Select dropdown styling */
+.account-select {
+    padding: 10px 25px; /* More padding */
+    border: 1px solid #ddd; /* Subtle border */
+    border-radius: 30px; /* More rounded */
+    background-color: #fff;
+    color: #ff6347; /* Accent color for text */
+    font-size: 1.05em;
+    font-weight: 600;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23ff6347" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 15px center; /* Adjusted position */
+    background-size: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.account-select:hover {
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* Option styling for Account Select */
+.account-select-option {
+    color: #333;
+    background-color: #fff;
+    padding: 10px 15px;
+    display: flex; /* Enable flex for icon and text alignment */
+    align-items: center; /* Align icon and text vertically */
+    gap: 8px; /* Space between icon and text */
+}
+
+.account-select-placeholder {
+    color: #999;
+}
+
+/* Responsive adjustments for AccountSelect when part of the mobile menu */
+@media (max-width: 992px) {
+    .account-select {
+        width: 100%;
+        max-width: none;
+        text-align: left;
+        padding-left: 15px;
+        background-color: #222; /* Darker background for select on mobile */
+        color: #fff; /* White text for select on mobile */
+    }
+
+    .account-select-option {
+        color: #fff; /* White text for options on mobile */
+        background-color: #222; /* Darker background for options on mobile */
+    }
+}
+
+@media (max-width: 576px) {
+    .account-select {
+        font-size: 1em;
+        padding: 8px 12px;
+    }
+}

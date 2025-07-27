@@ -1,56 +1,40 @@
-
-
-.poster-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
-  background-color: #f4f4f4;
-}
-
-.poster-content {
-  display: flex;
-  flex-direction: row;
-  max-width: 1200px;
-  gap: 30px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.poster-text {
-  flex: 1;
-}
-
-.poster-text h1 {
-  font-size: 2.5rem;
-  color: #333;
-}
-
-.poster-text p {
-  font-size: 1.2rem;
-  color: #555;
-}
-
-.poster-image img {
-  width: 100%;
-  max-width: 500px;
-  border-radius: 20px;
-}
-
 /* General Body Styling */
 .home-page {
-  background-color: #1a1a1a; /* Dark gray background */
-  color: #fff; /* White text for readability */
+  background-color: #1a1a1a;
+  color: #fff;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   padding: 3rem 2rem;
-  overflow: hidden;
+  overflow-x: hidden; /* Prevents horizontal scroll from 100vw or large elements */
+  position: relative; /* Needed for subsequent content to scroll below absolute slider */
+  padding-top: 100vh; /* Pushes content below the full-screen slider */
+}
+
+.hero-overlay-content {
+  position: absolute;
+  top: 50vh; /* Centered vertically relative to viewport */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  color: #fff;
+  text-align: center;
+  width: 90%;
+  max-width: 800px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.hero-overlay-content h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+  color: #f5a623;
 }
 
 /* Image Carousel */
 .image-carousel {
   overflow: hidden;
   padding: 2rem 0;
-  margin-top: 2rem;
+  margin-top: 2rem; /* Adjusted for placement after hero */
 }
 
 .marquee {
@@ -63,27 +47,145 @@
   object-fit: cover;
   border-radius: 50%;
   margin-right: 2rem;
-  border: 3px solid #f5a623; /* Gold border */
+  border: 3px solid #f5a623;
 }
 
-.home-container {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.home-card h1 {
+/* Section Titles */
+.section-title {
   font-size: 2.5rem;
+  color: #f5a623;
   font-weight: bold;
-  letter-spacing: 1px;
-  margin-bottom: 1rem;
-  color: #f5a623; /* Gold color */
+  margin-top: 4rem; /* Ensure consistent spacing */
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
-.home-card img {
-  width: 80%;
-  border-radius: 10px;
-  border: #f5a623 solid;
-  box-shadow: 0px 6px 12px gold;
+/* Card Container for "Tasty Bites Specials" */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #121212;
+}
+
+.card {
+  width: 260px;
+  height: 360px;
+  perspective: 1000px;
+  transition: transform 0.6s ease;
+  background: #1e1e1e; /* Match main content background */
+  border-radius: 20px;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.card:hover .content {
+  transform: rotateY(180deg);
+}
+
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  backface-visibility: hidden;
+}
+
+.front {
+  background: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  padding: 1rem;
+}
+
+.img {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 1rem;
+}
+
+.circle {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: #f5a623;
+  border-radius: 50%;
+  opacity: 0.3;
+}
+
+#right {
+  top: 10px;
+  left: 10px;
+}
+
+#bottom {
+  top: 20px;
+  left: 20px;
+}
+
+.badge {
+  background: #f5a623;
+  padding: 0.3rem 1rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: #000;
+  margin-bottom: 1rem;
+}
+
+.description {
+  text-align: center;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.card-footer {
+  color: #cccccc;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.back {
+  background: #f5a623;
+  color: #000;
+  transform: rotateY(180deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.back-content {
+  text-align: center;
+}
+
+.back-content svg {
+  margin-bottom: 1rem;
+}
+
+.back-content strong {
+  font-size: 1.2rem;
 }
 
 /* About Us Section */
@@ -94,7 +196,7 @@
 
 .about-us h2 {
   font-size: 2.5rem;
-  color: #f5a623; /* Gold */
+  color: #f5a623;
   font-weight: bold;
   margin-bottom: 1rem;
 }
@@ -107,6 +209,86 @@
   line-height: 1.8;
 }
 
+/* Card Section (for 'Special Picks' flip cards using dishes data) */
+.card-section {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.card-section h2 {
+  font-size: 2.5rem;
+  color: #f5a623;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.card-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+/* Flip Card Container styles */
+/* .card is already defined above, these apply to it */
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.card:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.card-front {
+  background-color: #2d2d2d;
+  color: #fff;
+}
+
+.card-back {
+  background-color: #2d2d2d;
+  color: #fff;
+  transform: rotateY(180deg);
+}
+
+/* Specific styling for h3, h4, p inside these flip cards */
+.card h3, .card h4 {
+  color: #f5a623;
+  font-weight: bold;
+}
+
+.card p {
+  color: #ddd;
+  font-size: 1rem;
+}
+
+.card-image {
+  width: 90%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
 /* Menu Section */
 .menu-section {
   text-align: center;
@@ -115,7 +297,7 @@
 
 .menu-section h2 {
   font-size: 2.5rem;
-  color: #f5a623; /* Gold */
+  color: #f5a623;
   font-weight: bold;
   margin-bottom: 2rem;
 }
@@ -128,7 +310,7 @@
 }
 
 .menu-item {
-  background-color: #2d2d2d; /* Slightly lighter than background */
+  background-color: #2d2d2d;
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
@@ -167,7 +349,7 @@
 
 .testimonials h2 {
   font-size: 2.5rem;
-  color: #f5a623; /* Gold */
+  color: #f5a623;
   font-weight: bold;
   margin-bottom: 2rem;
 }
@@ -186,7 +368,6 @@
   font-weight: bold;
 }
 
-
 /* Call to Action Section */
 .cta {
   text-align: center;
@@ -195,7 +376,7 @@
 
 .cta h2 {
   font-size: 2.5rem;
-  color: #f5a623; /* Gold */
+  color: #f5a623;
   font-weight: bold;
   margin-bottom: 1rem;
 }
@@ -211,7 +392,7 @@
 }
 
 .cta button:hover {
-  background-color: #d4891a; /* Darker gold on hover */
+  background-color: #d4891a;
 }
 
 /* Circular Image Gallery */
@@ -227,7 +408,7 @@
   height: 150px;
   object-fit: cover;
   border-radius: 50%;
-  border: 4px solid #f5a623; /* Gold border */
+  border: 4px solid #f5a623;
   transition: transform 0.3s;
 }
 
@@ -259,14 +440,24 @@
   margin: 1rem 0;
 }
 
-/* Global Typography */
-h2, h3 {
-  font-weight: bold;
-  letter-spacing: 0.5px;
-}
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .hero-overlay-content h1 {
+    font-size: 2.5rem;
+  }
+  .menu-items,
+  .card-grid,
+  .image-gallery {
+    flex-direction: column;
+    align-items: center;
+  }
 
-p, ul, li {
-  font-size: 1.2rem;
-  line-height: 1.8;
-}
+  .menu-item,
+  .card {
+    width: 90%;
+  }
 
+  .card-image {
+    height: 180px;
+  }
+}

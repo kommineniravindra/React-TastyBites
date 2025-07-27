@@ -1,6 +1,20 @@
 import React from 'react';
-import { BrowserRouter, Link, Route, Routes, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+// Importing Lucide React icons for App.jsx specific elements
+import {
+  Home as HomeIcon,
+  Salad,
+  Drumstick,
+  Coffee,
+  Popcorn,
+  ShoppingCart,
+  Package,
+  Phone,
+  Info
+} from 'lucide-react';
+
+// Assuming these components exist in the same directory
 import Home from './Home';
 import Veg from './Veg';
 import NonVeg from './NonVeg';
@@ -14,91 +28,65 @@ import Snacks from './Snacks';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
 
-import './MyStyles.css';
-import { logoutUser } from './store';
+// Import the separated AccountSelect component
+import AccountSelect from './AccountSelect';
 
-function AccountSelect() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+//import './App.css'; // Import the CSS file for App component
+import "./MyStyles.css"
 
-  const { isAuthenticated, currentUser } = useSelector(state => state.user);
-
-  // Handler for select change
-  const handleChange = (e) => {
-    const value = e.target.value;
-
-    if (value === 'signin') {
-      navigate('/SignIn');
-    } else if (value === 'signup') {
-      navigate('/SignUp');
-    } else if (value === 'logout') {
-      dispatch(logoutUser());
-    }
-
-    // Reset to default after action
-    e.target.value = '';
-  };
-
-  return (
-   <select
-  className="account-select"
-  onChange={handleChange}
-  defaultValue=""
-  aria-label="Account options"
->
-  <option className="account-select-placeholder" value="" disabled>
-    👤 {isAuthenticated ? currentUser?.userName :''}
-  </option>
-
-  {!isAuthenticated && (
-    <option className="account-select-option signin-option" value="signin">
-      Sign In
-    </option>
-  )}
-  {!isAuthenticated && (
-    <option className="account-select-option signup-option" value="signup">
-      Sign Up
-    </option>
-  )}
-
-  {isAuthenticated && (
-    <option className="account-select-option logout-option" value="logout">
-      Log Out
-    </option>
-  )}
-</select>
-
-  );
-}
-
+// Main App component
 function App() {
+  // Get cart items from Redux store
   const cartItems = useSelector(state => state.cart);
-  const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  // Calculate total quantity of items in the cart
+  const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <BrowserRouter>
+      {/* Navigation Bar */}
       <nav className="navbar">
-        <div className="brand-name">🍽️TASTY BITE'S</div>
+        {/* Removed Brand Name/Logo */}
 
+        {/* Navigation Links - always visible */}
         <div className="nav-links">
-          <Link className="nav-link" to="/Home">🏠Home</Link>
-          <Link className="nav-link" to="/Veg">🥗Veg</Link>
-          <Link className="nav-link" to="/NonVeg">🍗Non-Veg</Link>
-          <Link className="nav-link" to="/Drinks">🥤Drinks</Link>
-          <Link className="nav-link" to="/Snacks">🍿Snacks</Link>
-          <Link className="nav-link" to="/Cart">🛒Cart({count})</Link>
-          <Link className="nav-link" to="/Order">📦Order📦</Link>
-          <Link className="nav-link" to="/ContactUs">📞ContactUs</Link>
-          <Link className="nav-link" to="/AboutUs">AboutUs</Link>
+          <Link className="nav-link" to="/Home">
+            <HomeIcon size={20} /> Home
+          </Link>
+          <Link className="nav-link" to="/Veg">
+            <Salad size={20} /> Veg
+          </Link>
+          <Link className="nav-link" to="/NonVeg">
+            <Drumstick size={20} /> Non-Veg
+          </Link>
+          <Link className="nav-link" to="/Drinks">
+            <Coffee size={20} /> Drinks
+          </Link>
+          <Link className="nav-link" to="/Snacks">
+            <Popcorn size={20} /> Snacks
+          </Link>
+          <Link className="nav-link" to="/Cart">
+            <ShoppingCart size={20} /> Cart({cartItemCount})
+          </Link>
+          <Link className="nav-link" to="/Order">
+            <Package size={20} /> Order
+          </Link>
+          <Link className="nav-link" to="/ContactUs">
+            <Phone size={20} /> Contact Us
+          </Link>
+          <Link className="nav-link" to="/AboutUs">
+            <Info size={20} /> About Us
+          </Link>
         </div>
 
+        {/* Authentication Options - always visible */}
         <div className="auth-options">
           <AccountSelect />
         </div>
       </nav>
 
+      {/* Route Definitions */}
       <Routes>
-          <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/Home" element={<Home />} />
         <Route path="/Veg" element={<Veg />} />
         <Route path="/NonVeg" element={<NonVeg />} />
@@ -110,6 +98,7 @@ function App() {
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} />
+        {/* Catch-all route for undefined paths */}
         <Route path="*" element={<FileNotFound />} />
       </Routes>
     </BrowserRouter>

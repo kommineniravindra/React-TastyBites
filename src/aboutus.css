@@ -1,12 +1,4 @@
-/* Reset & Base Styles */
-* {
-  box-sizing: border-box;
-}
 
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
 
 .about-us-page {
   background-color: white;
@@ -68,3 +60,64 @@ body {
   transform: translateY(-10px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
+
+.features-container {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.heading {
+  background-color: #dc3545;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 28px;
+  margin-bottom: 40px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.feature-card {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease-in-out, border 0.3s;
+}
+
+.feature-card:hover {
+  transform: scale(1.05);
+  border: 2px solid #dc3545;
+}
+
+.icon {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.red { color: #dc3545; }
+
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-top: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: white;
+}
+
+.green  { background-color: #28a745; }
+.blue   { background-color: #007bff; }
+.yellow { background-color: #ffc107; color: #000; }
+.sky    { background-color: #17a2b8; }
+.dark   { background-color: #343a40; }
+.gray   { background-color: #6c757d; }
+
+
