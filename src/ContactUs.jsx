@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import emailjs from 'emailjs-com';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './ContactUs.css';
+import './contactus.css';
 
 function ContactUs() {
   const formRef = useRef(null);
