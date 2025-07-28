@@ -1,103 +1,99 @@
-body {
-  margin: 0;
-  padding: 0;
-  background-color: rgb(255, 255, 255);
-  font-family: 'Segoe UI', sans-serif;
-  overflow-x: hidden; /* Prevent horizontal scroll */
+/* Error.css */
+
+.error-section {
+  position: relative;
+  z-index: 10;
+  background-color: #20c997;
+  padding: 120px 0;
+  color: #ffffff;
 }
 
-.notfound-bg {
-  margin-left: 274px;
-  height: 100vh;
-  width: 100%;  /* Changed from 300% to 100% */
-  background: linear-gradient(to bottom right, #ffffff, #ffffff);
-  color: #FFD700;
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.row {
   display: flex;
   justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
 }
 
-.notfound-container {
+.column {
+  width: 100%;
+  padding: 0 16px;
+}
+
+.error-box {
+  max-width: 400px;
   text-align: center;
-  animation: fadeIn 1.5s ease-out;
+  margin: 0 auto;
 }
 
-.glow-404 {
-  color: #FFC700;
-  font-size: 120px;
+.error-code {
+  font-size: 100px;
   font-weight: bold;
-  text-shadow: 0 0 20px #FFD700, 0 0 30px #FFC700;
-  animation: pulse 2s infinite;
+  margin-bottom: 0.5rem;
 }
 
-.notfound-text {
-  color: black;
-  font-size: 24px;
-  margin: 5px 0 15px;
-  opacity: 0.9;
+.error-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
 }
 
-.animated-character img {
-  width: 180px;
-  animation: float 3s ease-in-out infinite;
+.error-description {
+  font-size: 18px;
+  margin-bottom: 2rem;
 }
 
-.notfound-home-btn {
-  margin-top: 20px;
+.home-link {
   display: inline-block;
-  padding: 12px 24px;
-  background-color: #FFD700;
-  color: black;
-  font-weight: bold;
-  border-radius: 10px;
+  padding: 12px 32px;
+  border: 2px solid #ffffff;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
   text-decoration: none;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.notfound-home-btn:hover {
-  background-color: #FFC700;
-  transform: scale(1.05);
+.home-link:hover {
+  background-color: #ffffff;
+  color: #20c997;
 }
 
-/* Stars or gears floating in background */
-.floating-stars::before,
-.floating-stars::after {
-  content: '★';
+.error-background {
   position: absolute;
-  color: #FFD700;
-  font-size: 20px;
-  animation: floatStar 6s infinite linear;
-  opacity: 0.4;
+  top: 0;
+  left: 0;
+  z-index: -10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.floating-stars::after {
-  content: '⚙️';
-  left: 70%;
-  top: 40%;
-  font-size: 24px;
-  animation-delay: 2s;
+.bg-stripe {
+  width: 33.3333%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.08), transparent);
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.bg-double-stripe {
+  display: flex;
+  width: 33.3333%;
+  height: 100%;
 }
 
-@keyframes pulse {
-  0% { text-shadow: 0 0 10px #FFD700; }
-  50% { text-shadow: 0 0 30px #FFD700; }
-  100% { text-shadow: 0 0 10px #FFD700; }
+.bg-double-stripe .bg-half {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent);
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-
-@keyframes floatStar {
-  0% { transform: translateY(0) rotate(0deg); top: 20%; left: 10%; }
-  100% { transform: translateY(-100vh) rotate(360deg); top: 0; left: 80%; }
+.bg-double-stripe .bg-half:last-child {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.08), transparent);
 }

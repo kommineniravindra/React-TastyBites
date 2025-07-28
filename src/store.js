@@ -1,12 +1,20 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore, createSlice, combineReducers } from "@reduxjs/toolkit";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-
-
-// Products Slice
 const productsSlice = createSlice({
   name: "products",
   initialState: {
-    veg:[
+    veg: [
       { name: "Paneer Butter Masala", price: 220, image: '/images/paneer-butter-masala.avif' },
       { name: "Veg Biryani", price: 180, image: '/images/veg-biryani.jpg' },
       { name: "Chana Masala", price: 160, image: '/images/Channa-Masala.avif' },
@@ -28,7 +36,7 @@ const productsSlice = createSlice({
       { name: "Masala Dosa", price: 130, image: '/images/Masala-Dosa.jpg' },
       { name: "Veg Fried Rice", price: 160, image: '/images/Veg-Fried-Rice.avif' },
     ],
-    nonVeg:[
+    nonVeg: [
       { name: "Chicken Biryani", price: 220, image: '/images/Chicken-Biryani.avif' },
       { name: "Butter Chicken", price: 250, image: '/images/Butter-Chicken.avif' },
       { name: "Mutton Rogan Josh", price: 320, image: '/images/Mutton-Rogan-Josh.jpg' },
@@ -50,7 +58,7 @@ const productsSlice = createSlice({
       { name: "Keema Pav", price: 150, image: '/images/Keema-Pav.jpg' },
       { name: "Tandoori Chicken", price: 240, image: '/images/Tandoori-Chicken.avif' },
     ],
-    drinks:[
+    drinks: [
       { name: "Apple Juice", price: 70, image: '/images/apple.jpg' },
       { name: "Banana Juice", price: 50, image: '/images/banana.jpg' },
       { name: "Cucumber Juice", price: 60, image: '/images/Cucumber-Cooler.avif' },
@@ -72,7 +80,7 @@ const productsSlice = createSlice({
       { name: "Pomegranate Juice", price: 40, image: '/images/promogranate.jpg' },
       { name: "Watermelon Juice", price: 25, image: '/images/watermelon.avif' },
     ],
-    snacks:[
+    snacks: [
       { name: "Cheese Balls", price: 80, image: '/images/Cheese Balls.jpg' },
       { name: "Chicken Popcorn", price: 120, image: '/images/Chicken Popcorn.avif' },
       { name: "Dhokla", price: 130, image: '/images/Dhokla.jpg' },
@@ -98,12 +106,9 @@ const productsSlice = createSlice({
   reducers: {}
 });
 
-// Cart Slice
-const localStorageCart = JSON.parse(localStorage.getItem("cart") || "[]");
-
 const cartSlice = createSlice({
   name: "cart",
-  initialState: localStorageCart,
+  initialState: [],
   reducers: {
     addToCart: (state, action) => {
       const item = state.find(i => i.name === action.payload.name);
@@ -130,7 +135,6 @@ const cartSlice = createSlice({
   }
 });
 
-// Orders Slice
 const orderSlice = createSlice({
   name: "orders",
   initialState: [],
@@ -141,7 +145,6 @@ const orderSlice = createSlice({
   }
 });
 
-// User Slice
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -180,17 +183,29 @@ export const {
 export const { registerUser, loginUser, logoutUser } = userSlice.actions;
 export const { orderDetails } = orderSlice.actions;
 
-const store = configureStore({
-  reducer: {
-    products: productsSlice.reducer,
-    cart: cartSlice.reducer,
-    orders: orderSlice.reducer,
-    user: userSlice.reducer,
-  }
+const rootReducer = combineReducers({
+  products: productsSlice.reducer,
+  cart: cartSlice.reducer,
+  orders: orderSlice.reducer,
+  user: userSlice.reducer,
 });
 
-store.subscribe(() => {
-  localStorage.setItem("cart", JSON.stringify(store.getState().cart));
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['cart', 'orders', 'user'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
-export default store;
+export const persistor = persistStore(store);

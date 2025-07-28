@@ -1,27 +1,35 @@
+// Error.jsx
 import React from 'react';
 import './NotFoundPage.css';
 
-const NotFoundPage = () => {
+const FileNotFound = () => {
   return (
-    <div className="notfound-bg">
-      <div className="floating-stars"></div>
-
-      <div className="notfound-container">
-        <h1 className="glow-404">404</h1>
-        <p className="notfound-text">Oops! The page you’re looking for doesn’t exist.</p>
-
-        <div className="animated-character">
-          {/* Placeholder SVG or emoji */}
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/4712/4712079.png"
-            alt="Lost Robot"
-          />
+    <section className="error-section">
+      <div className="container">
+        <div className="row">
+          <div className="column">
+            <div className="error-box">
+              <h2 className="error-code">404</h2>
+              <h4 className="error-title">Oops! That page can’t be found</h4>
+              <p className="error-description">The page you are looking for it maybe deleted</p>
+              <a href="/" className="home-link">
+                Go To Home
+              </a>
+            </div>
+          </div>
         </div>
-
-        <a href="/" className="notfound-home-btn">Return Home</a>
       </div>
-    </div>
+
+      <div className="error-background">
+        <div className="bg-stripe"></div>
+        <div className="bg-double-stripe">
+          <div className="bg-half"></div>
+          <div className="bg-half"></div>
+        </div>
+        <div className="bg-stripe"></div>
+      </div>
+    </section>
   );
 };
 
-export default NotFoundPage;
+export default FileNotFound;

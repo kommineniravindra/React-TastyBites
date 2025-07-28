@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Cart() {
   const cartItems = useSelector((state) => state.cart);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated); // Get authentication status
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -90,6 +91,14 @@ function Cart() {
       toast.error("Cart is empty!");
       return;
     }
+
+    // --- New check for authentication ---
+    if (!isAuthenticated) {
+      toast.warn("Please sign in or register to complete your order.");
+      navigate("/SignIn"); // Redirect to sign-in page
+      return;
+    }
+    // --- End of new check ---
 
     if (!userEmail || !validateEmail(userEmail)) {
       toast.error("Please enter a valid email address.");
