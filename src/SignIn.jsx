@@ -1,27 +1,32 @@
+// src/components/SignIn.js
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom'; // ✨ FIX: Import useLocation
 import { loginUser } from './store';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap import
-import './App.css'; // Optional for extra styling
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 function SignIn() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); // ✨ FIX: Get the location object
 
   const onSubmit = (data) => {
     dispatch(loginUser(data));
     alert("Login successful");
-    navigate('/Veg');
+    
+    // ✨ FIX: Check for a redirect path in the state, otherwise default to '/Veg'
+    const from = location.state?.from || '/Veg';
+    navigate(from, { replace: true });
   };
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="card p-4 shadow-sm" style={{ maxWidth: '400px', width: '100%' }}>
         <h2 className="text-center mb-4">Sign In</h2>
-
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
             <input

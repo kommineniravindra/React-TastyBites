@@ -12,9 +12,7 @@ import emailjs from "emailjs-com";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-// Note: Ensure Bootstrap CSS is imported in your project's entry point (e.g., index.js)
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import Confetti from 'react-confetti'; // ✨ Confetti library import
 
 function Cart() {
   const cartItems = useSelector((state) => state.cart);
@@ -31,9 +29,8 @@ function Cart() {
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [purchaseComplete, setPurchaseComplete] = useState(false);
-  const [countdown, setCountdown] = useState(2);
+  const [countdown, setCountdown] = useState(5); // Increased for confetti effect
 
-  // --- All business logic remains the same ---
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -91,9 +88,10 @@ function Cart() {
       toast.error("Cart is empty!");
       return;
     }
+    // ✨ Corrected logic for unauthenticated users
     if (!isAuthenticated) {
-      toast.warn("Please sign in or register to complete your order.");
-      navigate("/SignIn");
+      toast.warn("Please sign up or sign in to complete your order.");
+      navigate("/SignUp", { state: { from: "/Cart" } });
       return;
     }
     if (!userEmail || !validateEmail(userEmail)) {
@@ -104,7 +102,7 @@ function Cart() {
     }
 
     toast.info("Processing your order...");
-    setPurchaseComplete(true);
+    setPurchaseComplete(true); // This triggers the confetti screen
 
     const orderData = {
       id: Date.now(),
@@ -182,14 +180,22 @@ function Cart() {
 
   if (purchaseComplete) {
     return (
-      <div className="container text-center vh-100 d-flex flex-column justify-content-center align-items-center">
-        <ToastContainer position="top-right" autoClose={2000} />
-        <h1 className="display-4">🎉 Thank you for your order!</h1>
-        <p className="lead">
-          Redirecting to your Orders page in {countdown} seconds...
-        </p>
-        {/* You may need to keep some custom CSS for the confetti animation if desired */}
-      </div>
+      <>
+        {/* ✨ Confetti effect on purchase */}
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+          numberOfPieces={400}
+        />
+        <div className="container text-center vh-100 d-flex flex-column justify-content-center align-items-center">
+          <ToastContainer position="top-right" autoClose={2000} />
+          <h1 className="display-4">🎉 Thank you for your order!</h1>
+          <p className="lead">
+            Redirecting to your Orders page in {countdown} seconds...
+          </p>
+        </div>
+      </>
     );
   }
 

@@ -1,10 +1,12 @@
+// src/components/SignUp.js
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom'; // ✨ FIX: Import useLocation
 import { registerUser } from './store';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap
-import './App.css'; // Optional for extra styling
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 function SignUp() {
   const {
@@ -15,12 +17,14 @@ function SignUp() {
   } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); // ✨ FIX: Get the location object
   const password = watch('password');
 
   const onSubmit = (data) => {
     dispatch(registerUser(data));
     alert("Registered successfully");
-    navigate('/SignIn');
+    // ✨ FIX: Pass the location state along to the next page
+    navigate('/SignIn', { state: location.state });
   };
 
   return (
