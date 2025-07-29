@@ -4,7 +4,8 @@ import * as Yup from 'yup';
 import emailjs from 'emailjs-com';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './contactus.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css'; // Custom hover effects (defined below)
 
 function ContactUs() {
   const formRef = useRef(null);
@@ -50,84 +51,82 @@ function ContactUs() {
   };
 
   return (
-    <div className="contact-us-container">
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+    <>
+      <ToastContainer position="top-right" autoClose={3000} />
 
-      <h2>Contact Us</h2>
-      <p className="contact-intro">
-        Have a question or feedback? We'd love to hear from you! Fill out the form below and we'll get back to you as soon as possible.
-      </p>
-
-      <div className="contact-details-section">
-        <h3>Reach Out Directly</h3>
-        <p><strong>Email:</strong> kommineniravindra99@gmail.com</p>
-        <p><strong>Phone:</strong> +91 960 326 2008</p>
-        <p><strong>Address:</strong> 123 E-commerce Street, Cyberabad, Hyderabad, India</p>
+      {/* Hero Header */}
+      <div className="py-5 text-white text-center" style={{ background: 'linear-gradient(to right, #007bff, #6610f2)' }}>
+        <div className="container">
+          <h1 className="display-5 fw-bold">Contact Us</h1>
+          <p className="lead">Have questions or suggestions? Let’s talk!</p>
+        </div>
       </div>
 
-      <Formik
-        initialValues={{ user_name: '', user_email: '', subject: '', message: '' }}
-        validationSchema={ContactSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting, errors, touched }) => (
-          <Form ref={formRef} className="contact-form" noValidate>
-            <div className="form-group">
-              <label htmlFor="user_name">Your Name:</label>
-              <Field
-                type="text"
-                id="user_name"
-                name="user_name"
-                placeholder="Enter your name"
-                aria-required="true"
-              />
-              <ErrorMessage name="user_name" component="div" className="error-message" />
+      {/* Main Section */}
+      <div className="container-xxl py-5">
+        <div className="row g-5">
+          {/* Contact Info */}
+          <div className="col-lg-4">
+            <div className="contact-card h-100">
+              <h4 className="mb-4 text-primary">Reach Out Directly</h4>
+              <p><i className="bi bi-envelope-fill text-danger me-2"></i><strong>Email:</strong> kommineniravindra99@gmail.com</p>
+              <p><i className="bi bi-telephone-fill text-success me-2"></i><strong>Phone:</strong> +91 960 326 2008</p>
+              <p><i className="bi bi-geo-alt-fill text-warning me-2"></i><strong>Address:</strong> 123 E-commerce Street, Cyberabad, Hyderabad</p>
+              <div className="mt-4">
+                <h6 className="text-muted">Business Hours</h6>
+                <p>Mon – Sat: 9:00 AM – 6:00 PM</p>
+                <p>Sunday: Closed</p>
+              </div>
             </div>
+          </div>
 
-            <div className="form-group">
-              <label htmlFor="user_email">Your Email:</label>
-              <Field
-                type="email"
-                id="user_email"
-                name="user_email"
-                placeholder="Enter your email"
-                aria-required="true"
-              />
-              <ErrorMessage name="user_email" component="div" className="error-message" />
+          {/* Contact Form */}
+          <div className="col-lg-8 col-xl-9">
+            <div className="contact-card">
+              <div className="card-body p-5 bg-light rounded-4">
+                <Formik
+                  initialValues={{ user_name: '', user_email: '', subject: '', message: '' }}
+                  validationSchema={ContactSchema}
+                  onSubmit={handleSubmit}
+                >
+                  {({ isSubmitting }) => (
+                    <Form ref={formRef} noValidate>
+                      <div className="mb-4">
+                        <label htmlFor="user_name" className="form-label fs-5">Your Name</label>
+                        <Field type="text" name="user_name" className="form-control form-control-lg" placeholder="John Doe" />
+                        <ErrorMessage name="user_name" component="div" className="text-danger small" />
+                      </div>
+
+                      <div className="mb-4">
+                        <label htmlFor="user_email" className="form-label fs-5">Your Email</label>
+                        <Field type="email" name="user_email" className="form-control form-control-lg" placeholder="you@example.com" />
+                        <ErrorMessage name="user_email" component="div" className="text-danger small" />
+                      </div>
+
+                      <div className="mb-4">
+                        <label htmlFor="subject" className="form-label fs-5">Subject</label>
+                        <Field type="text" name="subject" className="form-control form-control-lg" placeholder="What's this about?" />
+                        <ErrorMessage name="subject" component="div" className="text-danger small" />
+                      </div>
+
+                      <div className="mb-4">
+                        <label htmlFor="message" className="form-label fs-5">Message</label>
+                        <Field as="textarea" name="message" rows="7" className="form-control form-control-lg" placeholder="Write your message here..." />
+                        <ErrorMessage name="message" component="div" className="text-danger small" />
+                      </div>
+
+                      <button type="submit" className="btn btn-primary btn-lg w-100 py-3 hover-glow" disabled={isSubmitting}>
+                        {isSubmitting ? 'Sending...' : 'Send Message'}
+                      </button>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
             </div>
-
-            <div className="form-group">
-              <label htmlFor="subject">Subject:</label>
-              <Field
-                type="text"
-                id="subject"
-                name="subject"
-                placeholder="Subject of your message"
-                aria-required="true"
-              />
-              <ErrorMessage name="subject" component="div" className="error-message" />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="message">Message:</label>
-              <Field
-                as="textarea"
-                id="message"
-                name="message"
-                rows="6"
-                placeholder="Type your message here..."
-                aria-required="true"
-              />
-              <ErrorMessage name="message" component="div" className="error-message" />
-            </div>
-
-            <button type="submit" className="submit-btn" disabled={isSubmitting}>
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

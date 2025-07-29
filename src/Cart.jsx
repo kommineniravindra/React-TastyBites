@@ -10,13 +10,15 @@ import {
 import QRCode from "react-qr-code";
 import emailjs from "emailjs-com";
 import { useNavigate } from "react-router-dom";
-import "./cart.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// Note: Ensure Bootstrap CSS is imported in your project's entry point (e.g., index.js)
+// import 'bootstrap/dist/css/bootstrap.min.css';
+
 function Cart() {
   const cartItems = useSelector((state) => state.cart);
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated); // Get authentication status
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,6 +33,7 @@ function Cart() {
   const [purchaseComplete, setPurchaseComplete] = useState(false);
   const [countdown, setCountdown] = useState(2);
 
+  // --- All business logic remains the same ---
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -53,14 +56,11 @@ function Cart() {
 
   const handleCouponApply = () => {
     const code = couponCodeRef.current.value.trim().toUpperCase();
-
     toast.info("Applying coupon...");
-
     if (appliedCoupon === code) {
       toast.info("Coupon already applied.");
       return;
     }
-
     switch (code) {
       case "RAVI10":
         setCouponCodeDiscount(10);
@@ -91,15 +91,11 @@ function Cart() {
       toast.error("Cart is empty!");
       return;
     }
-
-    // --- New check for authentication ---
     if (!isAuthenticated) {
       toast.warn("Please sign in or register to complete your order.");
-      navigate("/SignIn"); // Redirect to sign-in page
+      navigate("/SignIn");
       return;
     }
-    // --- End of new check ---
-
     if (!userEmail || !validateEmail(userEmail)) {
       toast.error("Please enter a valid email address.");
       toast.warn("Email required for order confirmation.");
@@ -176,7 +172,9 @@ function Cart() {
     setPaymentMethod((prevMethod) => {
       const newMethod = prevMethod === method ? null : method;
       toast.info(
-        newMethod ? `${newMethod.toUpperCase()} payment selected` : "Payment deselected"
+        newMethod
+          ? `${newMethod.toUpperCase()} payment selected`
+          : "Payment deselected"
       );
       return newMethod;
     });
@@ -184,146 +182,171 @@ function Cart() {
 
   if (purchaseComplete) {
     return (
-      <div className="thank-you-screen blast">
+      <div className="container text-center vh-100 d-flex flex-column justify-content-center align-items-center">
         <ToastContainer position="top-right" autoClose={2000} />
-        <h1>🎉 Thank you for your order!</h1>
-        <p>Redirecting to your Orders page in {countdown} seconds...</p>
-        <div className="confetti-container">
-          {Array(8).fill().map((_, i) => (
-            <div className="confetti" key={i}></div>
-          ))}
-        </div>
+        <h1 className="display-4">🎉 Thank you for your order!</h1>
+        <p className="lead">
+          Redirecting to your Orders page in {countdown} seconds...
+        </p>
+        {/* You may need to keep some custom CSS for the confetti animation if desired */}
       </div>
     );
   }
 
   return (
-    <div className="cart-container-solo-stove">
+    <div className="container my-5">
       <ToastContainer position="top-right" autoClose={2000} />
 
       {cartItems.length === 0 ? (
-        <div className="empty-cart-container">
-          <h1>🧺 <br />Empty Cart</h1>
-          <p>Looks like you haven’t added anything to your cart yet.<br />Start shopping now!</p>
+        <div className="text-center py-5">
+          <h1 className="display-1">🧺</h1>
+          <h2>Your Cart is Empty</h2>
+          <p className="lead text-muted">
+            Looks like you haven’t added anything yet. Start shopping now!
+          </p>
         </div>
       ) : (
-        <div className="cart-main-solo-stove">
-          <div className="cart-items-wrapper-solo-stove">
-            <h1>Your Cart ({cartItems.length} items)</h1>
+        <div className="row g-5">
+          {/* Cart Items Column */}
+          <div className="col-lg-8">
+            <h1 className="mb-4">Your Cart ({cartItems.length} items)</h1>
             {cartItems.map((item, idx) => (
-              <div key={idx} className="cart-item-solo-stove">
-                <img src={item.image} alt={item.name} className="cart-item-image-solo-stove" />
-                <div className="item-details-solo-stove">
-                  <div className="item-info-top">
-                    <span className="item-name-solo-stove">{item.name}</span>
-                    <span className="item-price-solo-stove">
-                      ₹{(item.price * item.quantity).toFixed(2)}
-                    </span>
+              <div key={idx} className="card mb-3">
+                <div className="card-body">
+                  <div className="d-flex align-items-center">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="rounded me-3"
+                      style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                    />
+                    <div className="flex-grow-1">
+                      <div className="d-flex justify-content-between">
+                        <h5 className="card-title mb-0">{item.name}</h5>
+                        <h5 className="text-primary">
+                          ₹{(item.price * item.quantity).toFixed(2)}
+                        </h5>
+                      </div>
+                      <div className="d-flex align-items-center mt-3">
+                        <div className="input-group" style={{ width: "120px" }}>
+                          <button
+                            className="btn btn-outline-secondary"
+                            onClick={() => dispatch(decrementItem(item))}
+                          >
+                            -
+                          </button>
+                          <span className="input-group-text justify-content-center" style={{ width: "40px" }}>
+                            {item.quantity}
+                          </span>
+                          <button
+                            className="btn btn-outline-secondary"
+                            onClick={() => dispatch(incrementItem(item))}
+                          >
+                            +
+                          </button>
+                        </div>
+                        <button
+                          className="btn btn-sm btn-outline-danger ms-auto"
+                          onClick={() => {
+                            dispatch(removeFromCart(item));
+                            toast.error(`${item.name} removed from cart!`);
+                          }}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="item-quantity-controls-solo-stove">
-                  <div className="quantity-box">
-                    <button onClick={() => dispatch(decrementItem(item))}>-</button>
-                    <span className="quantity-display">{item.quantity}</span>
-                    <button onClick={() => dispatch(incrementItem(item))}>+</button>
-                  </div>
-                  <button
-                    className="remove-item-solo-stove"
-                    onClick={() => {
-                      dispatch(removeFromCart(item));
-                      toast.error(`${item.name} removed from cart!`);
-                    }}
-                  >
-                    Remove
-                  </button>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="order-summary-solo-stove">
-            <h2>Order Summary</h2>
-            <div className="summary-section">
-              <div className="summary-row"><span>Subtotal:</span><span>₹{totalPrice.toFixed(2)}</span></div>
-              <div className="summary-row"><span>Sales Tax:</span><span>₹{taxAmount.toFixed(2)}</span></div>
-              <div className="summary-row"><span>🏷️ Manual Discount:</span><span>- ₹{discountAmount.toFixed(2)}</span></div>
-              <div className="summary-row"><span>🎟️ Coupon Discount:</span><span>- ₹{couponAmount.toFixed(2)}</span></div>
-            </div>
+          {/* Order Summary Column */}
+          <div className="col-lg-4">
+            <div className="card shadow-sm">
+              <div className="card-body">
+                <h2 className="card-title mb-4">Order Summary</h2>
+                
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item d-flex justify-content-between"><span>Subtotal:</span><span>₹{totalPrice.toFixed(2)}</span></li>
+                  <li className="list-group-item d-flex justify-content-between"><span>Sales Tax (18%):</span><span>₹{taxAmount.toFixed(2)}</span></li>
+                  <li className="list-group-item d-flex justify-content-between text-danger"><span>🏷️ Manual Discount:</span><span>- ₹{discountAmount.toFixed(2)}</span></li>
+                  <li className="list-group-item d-flex justify-content-between text-danger"><span>🎟️ Coupon Discount:</span><span>- ₹{couponAmount.toFixed(2)}</span></li>
+                  <li className="list-group-item d-flex justify-content-between h5 fw-bold mt-2"><span>Grand Total:</span><span>₹{finalAmount.toFixed(2)}</span></li>
+                </ul>
 
-            <div className="discount-buttons-reintegrated">
-              <button onClick={() => { setDiscountPercentage(10); toast.success("10% manual discount applied."); }}>10% Discount</button>
-              <button onClick={() => { setDiscountPercentage(20); toast.success("20% manual discount applied."); }}>20% Discount</button>
-              <button onClick={() => { setDiscountPercentage(30); toast.success("30% manual discount applied."); }}>30% Discount</button>
-            </div>
+                <div className="mt-4">
+                  <h6>Manual Discounts</h6>
+                  <div className="d-grid gap-2 d-md-flex">
+                    <button className="btn btn-sm btn-outline-info" onClick={() => { setDiscountPercentage(10); toast.success("10% manual discount applied."); }}>10%</button>
+                    <button className="btn btn-sm btn-outline-info" onClick={() => { setDiscountPercentage(20); toast.success("20% manual discount applied."); }}>20%</button>
+                    <button className="btn btn-sm btn-outline-info" onClick={() => { setDiscountPercentage(30); toast.success("30% manual discount applied."); }}>30%</button>
+                  </div>
+                </div>
 
-            <div className="summary-row coupon-code-row-solo">
-              <span>Coupon Code:</span>
-              <div className="coupon-input-apply">
-                <input type="text" ref={couponCodeRef} placeholder="Enter coupon code" disabled={!!appliedCoupon} />
-                <a href="#" onClick={handleCouponApply}>Add Coupon</a>
+                <div className="input-group my-4">
+                  <input type="text" ref={couponCodeRef} className="form-control" placeholder="Enter coupon code" disabled={!!appliedCoupon} />
+                  <button className="btn btn-outline-secondary" onClick={handleCouponApply}>Apply</button>
+                </div>
+
+                <div className="mb-4">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <h5 className="mb-0">Email for Confirmation</h5>
+                    <button className="btn btn-link btn-sm" onClick={() => setShowEmailInput(!showEmailInput)}>
+                      {showEmailInput ? "Hide" : "Show"}
+                    </button>
+                  </div>
+                  {showEmailInput && (
+                    <div className="mt-2">
+                      <input
+                        type="email"
+                        className="form-control"
+                        value={userEmail}
+                        onChange={(e) => setUserEmail(e.target.value)}
+                        placeholder="you@example.com"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div className="mb-4">
+                  <h5 className="mb-3">Select Payment Method</h5>
+                  <div className="d-grid gap-2">
+                    <button onClick={() => handlePaymentMethodClick("qr")} className={`btn ${paymentMethod === "qr" ? "btn-primary" : "btn-outline-primary"}`}>QR Code</button>
+                    <button onClick={() => handlePaymentMethodClick("card")} className={`btn ${paymentMethod === "card" ? "btn-primary" : "btn-outline-primary"}`}>Card</button>
+                  </div>
+                </div>
+
+                {paymentMethod === "qr" && (
+                  <div className="text-center p-3 border rounded mb-3">
+                    <h6>Scan to Pay ₹{finalAmount.toFixed(2)}</h6>
+                    <QRCode value={`upi://pay?pa=9603262008@ybl&pn=TASTYBITE'S&am=${finalAmount.toFixed(2)}&cu=INR`} size={150} />
+                    <p className="mt-2 mb-0">
+                      <small>UPI ID: 9603262008@ybl</small>
+                    </p>
+                  </div>
+                )}
+
+                {paymentMethod === "card" && (
+                  <div className="p-3 border rounded mb-3">
+                    <input type="text" className="form-control mb-2" placeholder="Name on Card" />
+                    <input type="text" className="form-control mb-2" placeholder="1234 5678 9012 3456" />
+                    <div className="row">
+                      <div className="col"><input type="text" className="form-control" placeholder="MM/YY" /></div>
+                      <div className="col"><input type="password" className="form-control" placeholder="CVV" maxLength={4} /></div>
+                    </div>
+                  </div>
+                )}
+                
+                <div className="d-grid">
+                    <button className="btn btn-success btn-lg" onClick={handleCompletePurchase}>
+                    Check Out
+                    </button>
+                </div>
+
               </div>
             </div>
-
-            <div className="free-shipping-note">
-              Congrats, you're eligible for <strong>Free Shipping</strong>
-            </div>
-
-            <div className="summary-row grand-total-row">
-              <span>Grand total:</span>
-              <span>₹{finalAmount.toFixed(2)}</span>
-            </div>
-
-            <h3 className="email-heading">
-              Email for Confirmation
-              <button
-                className="toggle-details-btn"
-                onClick={() => {
-                  setShowEmailInput(!showEmailInput);
-                  toast.info(showEmailInput ? "Email input hidden" : "Email input shown");
-                }}
-              >
-                {showEmailInput ? "Hide Email" : "Show Email"}
-              </button>
-            </h3>
-
-            {showEmailInput && (
-              <div className="email-box-reintegrated">
-                <label>📧 Enter your Gmail:</label>
-                <input
-                  type="email"
-                  value={userEmail}
-                  onChange={(e) => setUserEmail(e.target.value)}
-                  placeholder="you@example.com"
-                />
-              </div>
-            )}
-
-            <h3 className="payment-method-heading">Select Payment Method</h3>
-            <div className="payment-method-buttons-reintegrated">
-              <button onClick={() => handlePaymentMethodClick("qr")} className={paymentMethod === "qr" ? "active" : ""}>QR Code</button>
-              <button onClick={() => handlePaymentMethodClick("card")} className={paymentMethod === "card" ? "active" : ""}>Card</button>
-            </div>
-
-            {paymentMethod === "qr" && (
-              <div className="qr-code-section-reintegrated">
-                <h4>Scan to Pay ₹{finalAmount.toFixed(2)}</h4>
-                <QRCode value={`upi://pay?pa=9603262008@ybl&pn=TASTYBITE'S&am=${finalAmount.toFixed(2)}&cu=INR`} size={150} />
-                <p>UPI ID: 9603262008@ybl</p>
-              </div>
-            )}
-
-            {paymentMethod === "card" && (
-              <div className="card-payment-section-reintegrated">
-                <input type="text" placeholder="Name on Card" />
-                <input type="text" placeholder="1234 5678 9012 3456" />
-                <input type="text" placeholder="MM/YY" />
-                <input type="password" placeholder="CVV" maxLength={4} />
-              </div>
-            )}
-
-            <button className="checkout-btn" onClick={handleCompletePurchase}>
-              Check out
-            </button>
           </div>
         </div>
       )}

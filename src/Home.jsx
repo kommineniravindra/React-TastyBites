@@ -1,188 +1,193 @@
-import React from 'react';
-import './home.css';
-import ImageSlider from './ImageSlider';
-import { color } from 'framer-motion';
+import React, { useEffect } from 'react';
+import AOS from 'aos';
 
-const sliderImages = [
-  '/images/paneer-butter-masala.avif',
-  '/images/Chicken-Tikka.jpg',
-  '/images/pineapple.jpg',
-  '/images/Nachos.avif',
-  '/images/Vegetable-Samosa.avif',
-  '/images/Tandoori-Chicken.avif',
-];
+const Home = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 300,
+      once: true,
+      offset: 20,
+    });
+  }, []);
 
+  // Data for the "Special Picks" carousel
+  const specialPicks = [
+    { img: '/images/paneer-butter-masala.avif', name: 'Paneer Butter Masala', desc: 'Creamy, rich, and bursting with flavor.' },
+    { img: '/images/Chicken-Tikka.jpg', name: 'Classic Chicken Tikka', desc: 'Perfectly grilled chicken with aromatic spices.' },
+    { img: '/images/pineapple.jpg', name: 'Fresh Pineapple Juice', desc: 'A refreshing and tropical delight.' },
+    { img: '/images/Chicken-65.jpg', name: 'Spicy Chicken 65', desc: 'A fiery and popular appetizer from Hyderabad.' },
+  ];
 
-const dishes = [
-  {
-    dishName: 'Paneer Butter Masala',
-    category: 'Veg',
-    time: '30 min',
-    servings: '2',
-    image: '/images/paneer-butter-masala.avif'
-  },
-  {
-    dishName: 'Chicken Biryani',
-    category: 'Non-Veg',
-    time: '45 min',
-    servings: '4',
-    image: '/images/Chicken-Biryani.avif'
-  },
-  {
-    dishName: 'WaterMelon',
-    category: 'Drinks',
-    time: '10 min',
-    servings: '1',
-    image: '/images/watermelon.avif'
-  },
-  {
-    dishName: 'French Fries',
-    category: 'Snacks',
-    time: '15 min',
-    servings: '2',
-    image: '/images/French Fries.avif'
-  }
-];
+  // Data for the "Menu Preview" section
+  const menuPreviewItems = [
+    { img: 'veg-biryani.jpg', name: 'Hyderabadi Veg Biryani', desc: 'Aromatic basmati rice with fresh vegetables.' },
+    { img: 'Chicken-Tikka.jpg', name: 'Chicken Tikka', desc: 'Tender chicken marinated and grilled.' },
+    { img: 'French Fries.avif', name: 'Golden Fries', desc: 'Crispy, salty, and perfect for sharing.' },
+    { img: 'banana.jpg', name: 'Banana Milkshake', desc: 'Cool, creamy, and satisfyingly sweet.' },
+  ];
 
-const cards = [
-  {
-    category: 'Special',
-    title: 'Gulab Jamun',
-    time: '15 min',
-    details: '2 pieces',
-    backText: 'Delicious Indian Dessert'
-  },
-  {
-    category: 'Veg',
-    title: 'Rajma Chawal',
-    time: '25 min',
-    details: '1 plate',
-    backText: 'Healthy & Nutritious'
-  },
-  {
-    category: 'Non-Veg',
-    title: 'Butter Chicken',
-    time: '35 min',
-    details: '2 servings',
-    backText: 'Creamy & Spicy'
-  }
-];
+  // Data for the "Testimonials" section
+  const testimonials = [
+    { quote: "The best Hyderabadi biryani I've had outside of Hyderabad itself. The flavors were authentic and the delivery was quick. Highly recommended!", author: 'Arjun Reddy', location: 'Banjara Hills, Hyderabad', img: 'https://i.pravatar.cc/150?img=60' },
+    { quote: 'Tasty Bites is our go-to for weekend treats. The Chicken 65 is perfectly spicy and the fresh juices are a must-try. Consistent quality every time.', author: 'Priya Sharma', location: 'Gachibowli, Hyderabad', img: 'https://i.pravatar.cc/150?img=32' }
+  ];
 
-function Home() {
   return (
-    <div className="home-page">
-      <ImageSlider images={sliderImages} />
+    <div className="home-container">
+      {/* --- Custom Styles --- */}
+      <style>
+        {`
+          .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+            transition: all 0.3s ease-in-out;
+          }
+          .scroller {
+            animation: scroll 40s linear infinite;
+          }
+          .scroller-container:hover .scroller {
+            animation-play-state: paused;
+          }
+          @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          .hero-overlay {
+            background: rgba(0, 0, 0, 0.5);
+          }
+        `}
+      </style>
 
-      {/* Hero Overlay Content - Place this over the slider if desired */}
-      {/* Ensure .hero-overlay-content is styled with position: absolute, z-index, etc. in home.css */}
-      <div className="hero-overlay-content">
-        <h1>Experience the luxury of fine dining from your home</h1>
-        {/* You can add a button here like <button className="cta-button">Order Now</button> */}
+      {/* --- Hero Section --- */}
+      <div className="position-relative vh-100 d-flex align-items-center justify-content-center text-white text-center overflow-hidden">
+        <video src="/menu/v2.mp4" autoPlay muted loop playsInline className="position-absolute top-0 start-0 w-100 h-100" style={{ objectFit: 'cover', zIndex: 0 }} />
+        <div className="position-absolute top-0 start-0 w-100 h-100 hero-overlay" style={{ zIndex: 1 }}></div>
+        <div data-aos="fade-up" style={{ position: 'relative', zIndex: 2 }}>
+          <h1 className="display-3 fw-bold">Welcome to Tasty Bites</h1>
+          <p className="lead fs-4 mt-3">Crafted with Passion, Delivered with Joy</p>
+          <a href="/veg" className="btn btn-warning btn-lg mt-4 px-5 py-3 fw-bold">
+            Order Now
+          </a>
+        </div>
       </div>
 
-      <div className="image-carousel">
-        <marquee behavior="scroll" direction="left" scrollamount="8" className="marquee">
-          <img src="/images/apple.jpg" alt="Dish 1" className="carousel-img" />
-          <img src="/images/Masala-Dosa.jpg" alt="Dish 2" className="carousel-img" />
-          <img src="/images/Tandoori-Chicken.avif" alt="Dish 3" className="carousel-img" />
-          <img src="/images/pineapple.jpg" alt="Dish 4" className="carousel-img" />
-          <img src="/images/veg-biryani.jpg" alt="Dish 5" className="carousel-img" />
-          <img src="/menu/img1.avif" alt="Circle 1" className="circle-img" />
-          <img src="/menu/img2.avif" alt="Circle 2" className="circle-img" />
-          <img src="/menu/img3.jpg" alt="Circle 3" className="circle-img" />
-        </marquee>
-      </div>
-
-
-      <div className="about-us">
-        <h2>About Us</h2>
-        <p>
-          At Tasty Bites, we believe great food brings people together. Our menu is a vibrant mix of flavors,
-          offering something delicious for everyone — spicy non-veg delights, wholesome vegetarian meals,
-          refreshing beverages, and crunchy snacks.
-        </p>
-      </div>
-
-      <div className="card-section">
-        <h2 className="section-title">Special Picks</h2>
-        <div className="menu-items card-grid">
-          {dishes.map((dish, index) => (
-            <div className="card" key={index}>
-              <div className="card-inner">
-                <div className="card-front">
-                  <img src={dish.image} alt={dish.dishName} className="card-image" />
-                  <h3>{dish.dishName}</h3>
-                </div>
-                <div className="card-back">
-                  <h4>{dish.category}</h4>
-                  <p>Time: {dish.time}</p>
-                  <p>Servings: {dish.servings}</p>
-                </div>
-              </div>
-            </div>
+      {/* --- Infinite Image Scroller Section --- */}
+      <div className="scroller-container bg-light py-4 overflow-hidden">
+        <div className="scroller d-flex">
+          {[...Array(2)].map((_, i) => (
+            ['apple.jpg', 'Masala-Dosa.jpg', 'Tandoori-Chicken.avif', 'pineapple.jpg', 'veg-biryani.jpg', 'Chicken-Tikka.jpg'].map((img, idx) => (
+              <img key={`${i}-${idx}`} src={`/images/${img}`} alt={`Dish ${idx}`} className="mx-3 rounded-circle" style={{ width: '100px', height: '100px', objectFit: 'cover', border: '3px solid #fff', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }} />
+            ))
           ))}
         </div>
       </div>
-
-      <div className="menu-section">
-        <h2>Our Menu</h2>
-        <div className="menu-items">
-          <div className="menu-item">
-            <img src="/images/veg-biryani.jpg" alt="Veg Dish" />
-            <h3>Veg Biryani</h3>
-            <p>Fresh, organic vegetables tossed in a tangy, light dressing</p>
+      
+      {/* --- Special Picks Carousel Section --- */}
+      <section className="py-5 bg-white">
+        <div className="container">
+          <div className="text-center mb-5" data-aos="fade-up">
+            <h2 className="fw-bold">This Week's Special Picks</h2>
+            <p className="text-muted">Handpicked by our chef, just for you.</p>
           </div>
-          <div className="menu-item">
-            <img src="/images/Chicken-Tikka.jpg" alt="Non-Veg Dish" />
-            <h3>Chicken Tikka</h3>
-            <p>Perfectly grilled, tender chicken served with savory spices</p>
-          </div>
-          <div className="menu-item">
-            <img src="/images/French Fries.avif" alt="Snack" />
-            <h3>French Fries</h3>
-            <p>Crispy and golden, the perfect snack to pair with any meal</p>
-          </div>
-          <div className="menu-item">
-            <img src="/images/banana.jpg" alt="Drink" />
-            <h3>Banana Juice</h3>
-            <p>Refreshing yogurt-based drink with a rich mango flavor</p>
+          <div id="specialPicksCarousel" className="carousel slide carousel-fade" data-bs-ride="carousel" data-aos="fade-up" data-aos-delay="200">
+            <div className="carousel-indicators">
+              {specialPicks.map((_, index) => ( <button key={index} type="button" data-bs-target="#specialPicksCarousel" data-bs-slide-to={index} className={index === 0 ? 'active' : ''} aria-label={`Slide ${index + 1}`}></button> ))}
+            </div>
+            <div className="carousel-inner rounded-4 shadow-lg">
+              {specialPicks.map((pick, index) => (
+                <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`} data-bs-interval="3000">
+                  <img src={pick.img} className="d-block w-100" alt={pick.name} style={{ height: '500px', objectFit: 'cover' }} />
+                  <div className="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded-3 p-3 mb-4">
+                    <h5>{pick.name}</h5><p>{pick.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button className="carousel-control-prev" type="button" data-bs-target="#specialPicksCarousel" data-bs-slide="prev"><span className="carousel-control-prev-icon" aria-hidden="true"></span><span className="visually-hidden">Previous</span></button>
+            <button className="carousel-control-next" type="button" data-bs-target="#specialPicksCarousel" data-bs-slide="next"><span className="carousel-control-next-icon" aria-hidden="true"></span><span className="visually-hidden">Next</span></button>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="testimonials">
-        <h2>What Our Customers Say</h2>
-        <div className="testimonial">
-          <p>"The food was absolutely amazing! Best dining experience I've ever had!"</p>
-          <h4>- Jane Doe</h4>
+      {/* --- "Our Promise" Section --- */}
+      <section className="py-5 bg-light">
+        <div className="container">
+          <div className="text-center mb-5" data-aos="fade-up">
+            <h2 className="fw-bold">Our Promise</h2>
+            <p className="lead text-muted">Quality, Taste, and Service You Can Trust.</p>
+          </div>
+          <div className="row text-center g-4">
+            <div className="col-md-4" data-aos="fade-up" data-aos-delay="100">
+              <div className="p-4 bg-white rounded-4 shadow-sm h-100 card-hover"><div className="fs-1 text-warning mb-3"><i className="bi bi-flower1"></i></div><h5 className="fw-bold">Fresh Ingredients</h5><p className="text-muted">We source the freshest local ingredients to ensure every dish is packed with authentic flavor.</p></div>
+            </div>
+            <div className="col-md-4" data-aos="fade-up" data-aos-delay="200">
+               <div className="p-4 bg-white rounded-4 shadow-sm h-100 card-hover"><div className="fs-1 text-warning mb-3"><i className="bi bi-person-gear"></i></div><h5 className="fw-bold">Expertly Crafted</h5><p className="text-muted">Our chefs bring years of culinary passion and authentic Hyderabadi recipes to your plate.</p></div>
+            </div>
+            <div className="col-md-4" data-aos="fade-up" data-aos-delay="300">
+              <div className="p-4 bg-white rounded-4 shadow-sm h-100 card-hover"><div className="fs-1 text-warning mb-3"><i className="bi bi-bicycle"></i></div><h5 className="fw-bold">Fast & Friendly Delivery</h5><p className="text-muted">Your food arrives hot, fresh, and on time, right at your doorstep in Hyderabad.</p></div>
+            </div>
+          </div>
         </div>
-        <div className="testimonial">
-          <p>"Highly recommend! The delivery was prompt and the food was cooked to perfection!"</p>
-          <h4>- John Smith</h4>
+      </section>
+
+      {/* --- Menu Preview Section --- */}
+      <section className="py-5 bg-white">
+        <div className="container">
+          <div className="text-center mb-5" data-aos="fade-up">
+            <h2 className="fw-bold">A Glimpse of Our Menu</h2>
+            <p className="text-muted">Explore a few of our most-loved dishes.</p>
+          </div>
+          <div className="row g-4">
+            {menuPreviewItems.map((item, idx) => (
+              <div key={idx} className="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay={idx * 100}>
+                <div className="card text-center h-100 border-0 shadow-sm rounded-4 card-hover">
+                  <img src={`/images/${item.img}`} className="card-img-top rounded-top-4" alt={item.name} style={{ height: '200px', objectFit: 'cover' }}/>
+                  <div className="card-body d-flex flex-column">
+                    <h5 className="card-title fw-bold">{item.name}</h5><p className="text-muted small flex-grow-1">{item.desc}</p><a href="/veg" className="btn btn-outline-warning mt-auto">View Details</a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+           <div className="text-center mt-5" data-aos="fade-up"><a href="/veg" className="btn btn-primary btn-lg px-5">Explore Full Menu</a></div>
         </div>
-      </div>
+      </section>
 
-      <div className="cta">
-        <h2>Order Now and Experience Gourmet Dining!</h2>
-        <button>Order Now</button>
-      </div>
-
-      <div className="image-gallery">
-        <img src="/menu/img1.avif" alt="Dish 1" className="circle-img" />
-        <img src="/menu/img2.avif" alt="Dish 2" className="circle-img" />
-        <img src="/menu/img3.jpg" alt="Dish 3" className="circle-img" />
-      </div>
-
-      <div className="features-section">
-        <h2>Why Choose Us?</h2>
-        <ul>
-          <li>Top Chefs from Around the World</li>
-          <li>Fresh Ingredients Delivered to Your Doorstep</li>
-          <li>Customizable Dining Experiences</li>
-        </ul>
-      </div>
+      {/* --- Testimonials Section --- */}
+      <section className="py-5 bg-light">
+        <div className="container">
+          <div className="text-center mb-5" data-aos="fade-up">
+            <h2 className="fw-bold">What Our Customers Say</h2>
+            <p className="text-muted">Real stories from happy food lovers in Hyderabad.</p>
+          </div>
+          <div className="row g-4 justify-content-center">
+              {testimonials.map((item, idx) => (
+                <div key={idx} className="col-md-6 col-lg-5" data-aos="fade-up" data-aos-delay={idx * 100}>
+                    <div className="card h-100 border-0 shadow-sm rounded-4">
+                        <div className="card-body p-4 d-flex flex-column text-center">
+                            <img src={item.img} alt={item.author} className="rounded-circle mx-auto mb-3" style={{width: '80px', height: '80px', border: '4px solid #ffc107'}} />
+                            <blockquote className="blockquote mb-4 flex-grow-1"><p className="fst-italic">"{item.quote}"</p></blockquote>
+                            <footer className="blockquote-footer fw-bold">{item.author}, <cite title="Source Title">{item.location}</cite></footer>
+                        </div>
+                    </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* --- Final Call to Action Section --- */}
+      <section className="text-white text-center py-5" style={{ background: 'linear-gradient(45deg, #ffc107, #ff6a00)' }}>
+        <div className="container" data-aos="fade-up">
+          <h2 className="display-5 fw-bold">Feeling Hungry?</h2>
+          <p className="lead my-3">Don't wait! Let us bring the taste of authentic Hyderabadi cuisine to you.</p>
+          <a href="/veg" className="btn btn-light btn-lg mt-3 fw-bold px-5 py-3">
+              Order Now & Get 10% Off!
+          </a>
+        </div>
+      </section>
     </div>
   );
-}
+};
 
 export default Home;

@@ -1,6 +1,6 @@
 // Error.jsx
 import React from 'react';
-import './NotFoundPage.css';
+
 
 const FileNotFound = () => {
   return (

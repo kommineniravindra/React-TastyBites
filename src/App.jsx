@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// Importing Lucide React icons for App.jsx specific elements
+import "./App.css";
 import {
   Home as HomeIcon,
   Salad,
@@ -13,8 +13,9 @@ import {
   Phone,
   Info
 } from 'lucide-react';
+import 'aos/dist/aos.css';
+import AOS from 'aos';
 
-// Assuming these components exist in the same directory
 import Home from './Home';
 import Veg from './Veg';
 import NonVeg from './NonVeg';
@@ -27,80 +28,107 @@ import Drink from './Drink';
 import Snacks from './Snacks';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
-
-// Import the separated AccountSelect component
 import AccountSelect from './AccountSelect';
 
-//import './App.css'; // Import the CSS file for App component
-import "./MyStyles.css"
-
-// Main App component
 function App() {
-  // Get cart items from Redux store
-  const cartItems = useSelector(state => state.cart);
-  // Calculate total quantity of items in the cart
+  const cartItems = useSelector((state) => state.cart);
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <BrowserRouter>
-      {/* Navigation Bar */}
-      <nav className="navbar">
-        {/* Removed Brand Name/Logo */}
+      <nav className="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div className="container-fluid">
+          <Link className="navbar-brand text-warning fw-bold fs-4" to="/Home">TastyBites</Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
 
-        {/* Navigation Links - always visible */}
-        <div className="nav-links">
-          <Link className="nav-link" to="/Home">
-            <HomeIcon size={20} /> Home
-          </Link>
-          <Link className="nav-link" to="/Veg">
-            <Salad size={20} /> Veg
-          </Link>
-          <Link className="nav-link" to="/NonVeg">
-            <Drumstick size={20} /> Non-Veg
-          </Link>
-          <Link className="nav-link" to="/Drinks">
-            <Coffee size={20} /> Drinks
-          </Link>
-          <Link className="nav-link" to="/Snacks">
-            <Popcorn size={20} /> Snacks
-          </Link>
-          <Link className="nav-link" to="/Cart">
-            <ShoppingCart size={20} /> Cart({cartItemCount})
-          </Link>
-          <Link className="nav-link" to="/Order">
-            <Package size={20} /> Order
-          </Link>
-          <Link className="nav-link" to="/ContactUs">
-            <Phone size={20} /> Contact Us
-          </Link>
-          <Link className="nav-link" to="/AboutUs">
-            <Info size={20} /> About Us
-          </Link>
-        </div>
-
-        {/* Authentication Options - always visible */}
-        <div className="auth-options">
-          <AccountSelect />
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <Link className="nav-link text-light d-flex align-items-center" to="/Home">
+                  <HomeIcon size={18} className="me-1" /> Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-light d-flex align-items-center" to="/Veg">
+                  <Salad size={18} className="me-1" /> Veg
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-light d-flex align-items-center" to="/NonVeg">
+                  <Drumstick size={18} className="me-1" /> Non-Veg
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-light d-flex align-items-center" to="/Drinks">
+                  <Coffee size={18} className="me-1" /> Drinks
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-light d-flex align-items-center" to="/Snacks">
+                  <Popcorn size={18} className="me-1" /> Snacks
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-light d-flex align-items-center" to="/Cart">
+                  <ShoppingCart size={18} className="me-1" /> Cart
+                  {cartItemCount > 0 && (
+                    <span className="badge bg-warning text-dark ms-2 rounded-pill badge-animate">
+                      {cartItemCount}
+                    </span>
+                  )}
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-light d-flex align-items-center" to="/Order">
+                  <Package size={18} className="me-1" /> Order
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-light d-flex align-items-center" to="/ContactUs">
+                  <Phone size={18} className="me-1" /> Contact
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-light d-flex align-items-center" to="/AboutUs">
+                  <Info size={18} className="me-1" /> About
+                </Link>
+              </li>
+            </ul>
+            <div className="d-flex">
+              <AccountSelect />
+            </div>
+          </div>
         </div>
       </nav>
 
-      {/* Route Definitions */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/Home" element={<Home />} />
-        <Route path="/Veg" element={<Veg />} />
-        <Route path="/NonVeg" element={<NonVeg />} />
-        <Route path="/Drinks" element={<Drink />} />
-        <Route path="/Snacks" element={<Snacks />} />
-        <Route path="/Cart" element={<Cart />} />
-        <Route path="/Order" element={<Order />} />
-        <Route path="/ContactUs" element={<ContactUs />} />
-        <Route path="/AboutUs" element={<AboutUs />} />
-        <Route path="/SignIn" element={<SignIn />} />
-        <Route path="/SignUp" element={<SignUp />} />
-        {/* Catch-all route for undefined paths */}
-        <Route path="*" element={<FileNotFound />} />
-      </Routes>
+      {/* Padding below fixed navbar */}
+      <div style={{ paddingTop: '70px' }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/Home" element={<Home />} />
+          <Route path="/Veg" element={<Veg />} />
+          <Route path="/NonVeg" element={<NonVeg />} />
+          <Route path="/Drinks" element={<Drink />} />
+          <Route path="/Snacks" element={<Snacks />} />
+          <Route path="/Cart" element={<Cart />} />
+          <Route path="/Order" element={<Order />} />
+          <Route path="/ContactUs" element={<ContactUs />} />
+          <Route path="/AboutUs" element={<AboutUs />} />
+          <Route path="/SignIn" element={<SignIn />} />
+          <Route path="/SignUp" element={<SignUp />} />
+          <Route path="*" element={<FileNotFound />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }

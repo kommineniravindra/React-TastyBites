@@ -1,44 +1,38 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import './vegstyle.css';
 import { addToCart } from './store';
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Footer from './Footer'; // ✅ Importing Footer
+import "./App.css";
+
 
 function Veg() {
-  const vegProducts = useSelector(state => state.products.veg);
+  const vegProducts = useSelector((state) => state.products.veg);
   const dispatch = useDispatch();
 
-  const itemPerPage = 8;
-  const [currentpage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // Price ranges and their labels
   const priceRanges = [
     { id: '0-200', label: '₹0 - ₹200' },
     { id: '201-400', label: '₹201 - ₹400' },
     { id: '401-600', label: '₹401 - ₹600' },
   ];
 
-  // State to track which price ranges are checked
   const [selectedPrices, setSelectedPrices] = useState([]);
 
-  // Handle checkbox toggle
   const handleCheckboxChange = (id) => {
     setCurrentPage(1);
-    setSelectedPrices(prev => {
-      if (prev.includes(id)) {
-        return prev.filter(price => price !== id);
-      } else {
-        return [...prev, id];
-      }
-    });
+    setSelectedPrices((prev) =>
+      prev.includes(id) ? prev.filter((price) => price !== id) : [...prev, id]
+    );
   };
 
-  // Filtering function based on selected price ranges
   const filterByPrice = (product) => {
-    if (selectedPrices.length === 0) return true; // no filter = show all
-
-    return selectedPrices.some(range => {
+    if (selectedPrices.length === 0) return true;
+    return selectedPrices.some((range) => {
       if (range === '0-200') return product.price >= 0 && product.price <= 200;
       if (range === '201-400') return product.price >= 201 && product.price <= 400;
       if (range === '401-600') return product.price >= 401 && product.price <= 600;
@@ -48,87 +42,101 @@ function Veg() {
 
   const filteredProducts = vegProducts.filter(filterByPrice);
 
-  const indexofLastitem = currentpage * itemPerPage;
-  const indexofFirstItem = indexofLastitem - itemPerPage;
-  const currentItems = filteredProducts.slice(indexofFirstItem, indexofLastitem);
-  const totalPages = Math.ceil(filteredProducts.length / itemPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
-  const goToPage = (page) => { setCurrentPage(page); };
-
-  const vegListItems = currentItems.map((product, index) => (
-    <li key={index}>
-      <img src={product.image} alt={product.name} />
-      <div className="product-name">{product.name}</div>
-      <div className="product-price">₹{product.price}</div>
-      <button onClick={() => {
-        dispatch(addToCart(product));
-        toast.success(`${product.name} added to cart!`);
-      }}>Add to Cart</button>
-    </li>
-  ));
+  const goToPage = (page) => setCurrentPage(page);
 
   return (
-    <div className="veg-container">
-      <ToastContainer position="top-right" autoClose={2000} />
-      <h1>Veg Items</h1>
+    <>
+      <div className="container py-5">
+        <ToastContainer position="top-right" autoClose={2000} />
+        <h1 className="mb-4 text-center text-success fw-bold">Veg Items</h1>
 
-      {/* Checkbox Price Filter */}
-      <div className="filter checkbox-filter">
-        <span className="filter-label">Filter by Price:</span>
-        {priceRanges.map(({ id, label }) => (
-          <label key={id} className="filter-checkbox">
-            <input
-              type="checkbox"
-              value={id}
-              checked={selectedPrices.includes(id)}
-              onChange={() => handleCheckboxChange(id)}
-            />
-            {label}
-          </label>
-        ))}
+        {/* Price Filter */}
+        <div className="mb-4">
+          <h5 className="mb-2">Filter by Price:</h5>
+          <div className="d-flex flex-wrap gap-3">
+            {priceRanges.map(({ id, label }) => (
+              <div className="form-check" key={id}>
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id={id}
+                  checked={selectedPrices.includes(id)}
+                  onChange={() => handleCheckboxChange(id)}
+                />
+                <label className="form-check-label" htmlFor={id}>
+                  {label}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Product Grid */}
+        <div className="row g-4">
+          {currentItems.map((product, index) => (
+            <div className="col-md-3" key={index}>
+              <div className="card h-100 shadow-sm">
+                <img
+                  src={product.image}
+                  className="card-img-top"
+                  alt={product.name}
+                  style={{ height: '200px', objectFit: 'cover' }}
+                />
+                <div className="card-body text-center d-flex flex-column">
+                  <h5 className="card-title">{product.name}</h5>
+                  <p className="card-text text-danger fw-bold">₹{product.price}</p>
+                  <button
+                    className="btn btn-warning mt-auto"
+                    onClick={() => {
+                      dispatch(addToCart(product));
+                      toast.success(`${product.name} added to cart!`);
+                    }}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Pagination */}
+        <div className="d-flex justify-content-center mt-4">
+          <nav>
+            <ul className="pagination">
+              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button className="page-link" onClick={() => goToPage(currentPage - 1)}>
+                  Prev
+                </button>
+              </li>
+              {Array.from({ length: totalPages }, (_, index) => (
+                <li
+                  key={index + 1}
+                  className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
+                >
+                  <button className="page-link" onClick={() => goToPage(index + 1)}>
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+              <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                <button className="page-link" onClick={() => goToPage(currentPage + 1)}>
+                  Next
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
 
-      <ol className="veg-list">{vegListItems}</ol>
-
-      {/* Pagination */}
-      <div className="pagination">
-        <button onClick={() => goToPage(currentpage - 1)} disabled={currentpage === 1}>Prev</button>
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => goToPage(index + 1)}
-            className={currentpage === index + 1 ? "active" : ""}
-          >
-            {index + 1}
-          </button>
-        ))}
-        <button onClick={() => goToPage(currentpage + 1)} disabled={currentpage === totalPages}>Next</button>
-      </div>
-          <footer className="custom-footer">
-  <h2>Tasty Bite's</h2>
-  <p>
-   Our team is made up of professionals dedicated to excellence. We value collaboration, creativity, and commitment in everything we do.
-
-  </p>
-  <div className="social-icons">
-    <a href="#"><i className="fab fa-facebook-f"></i></a>
-    <a href="#"><i className="fab fa-twitter"></i></a>
-    <a href="#"><i className="fab fa-google-plus-g"></i></a>
-    <a href="#"><i className="fab fa-youtube"></i></a>
-    <a href="#"><i className="fab fa-linkedin-in"></i></a>
-  </div>
-  <div className="footer-bottom">
-    <p>&copy; {new Date().getFullYear()} <span className="brand">Tasty Bite's</span></p>
-    <div className="footer-links">
-      <a href="/">Home</a>
-      <a href="/about">About</a>
-      <a href="/contact">Contact</a>
-      <a href="/blog">Blog</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
+      {/* Footer */}
+      <Footer />
+    </>
   );
 }
 
