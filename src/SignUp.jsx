@@ -3,10 +3,12 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useNavigate, Link, useLocation } from 'react-router-dom'; // ✨ FIX: Import useLocation
-import { registerUser } from './store';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { registerUser } from './store'; // Assuming 'store' contains Redux setup and actions
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import './App.css'; // Assuming App.css contains general styles
+import { ToastContainer, toast } from 'react-toastify'; // For displaying notifications
+import 'react-toastify/dist/ReactToastify.css'; // Styles for react-toastify
 
 function SignUp() {
   const {
@@ -14,21 +16,23 @@ function SignUp() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm(); // React Hook Form for form management
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation(); // ✨ FIX: Get the location object
-  const password = watch('password');
+  const location = useLocation(); // Get the location object to access state (e.g., from: "/Cart")
+  const password = watch('password'); // Watch password field for confirmation validation
 
   const onSubmit = (data) => {
-    dispatch(registerUser(data));
-    alert("Registered successfully");
-    // ✨ FIX: Pass the location state along to the next page
+    dispatch(registerUser(data)); // Dispatch registerUser action to Redux store
+    toast.success("Registered successfully! Please sign in."); // User feedback with toast
+    // Navigate to SignIn page, passing the original 'from' state
+    // So SignIn can redirect the user back to where they came from (e.g., /Cart)
     navigate('/SignIn', { state: location.state });
   };
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
+      <ToastContainer position="top-right" autoClose={2000} /> {/* Toast container for notifications */}
       <div className="card p-4 shadow-sm" style={{ maxWidth: '500px', width: '100%' }}>
         <h2 className="text-center mb-4">Create Account</h2>
 
@@ -59,22 +63,7 @@ function SignUp() {
             {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
           </div>
 
-          <div className="mb-3">
-            <input
-              type="tel"
-              placeholder="Phone Number"
-              className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
-              {...register("phone", {
-                required: "Phone number is required",
-                pattern: {
-                  value: /^[0-9]{10}$/,
-                  message: "Enter a valid 10-digit phone number"
-                }
-              })}
-            />
-            {errors.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
-          </div>
-
+          
           <div className="mb-3">
             <input
               type="password"
@@ -95,7 +84,7 @@ function SignUp() {
               className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
               {...register("confirmPassword", {
                 required: "Confirm Password is required",
-                validate: value => value === password || "Passwords do not match"
+                validate: value => value === password || "Passwords do not match" 
               })}
             />
             {errors.confirmPassword && (

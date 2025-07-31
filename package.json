@@ -23,6 +23,7 @@
     "framer-motion": "^12.23.11",
     "lucide-react": "^0.526.0",
     "react": "^19.0.0",
+    "react-bootstrap": "^2.10.10",
     "react-confetti": "^6.4.0",
     "react-dom": "^19.0.0",
     "react-google-recaptcha": "^3.1.0",

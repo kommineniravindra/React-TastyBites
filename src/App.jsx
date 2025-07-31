@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import "./App.css";
@@ -34,11 +34,23 @@ function App() {
   const cartItems = useSelector((state) => state.cart);
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
+
+  // This function closes the navbar on mobile when a link is clicked
+  const handleNavClick = () => {
+    const nav = document.getElementById("navbarNav");
+    if (nav && nav.classList.contains("show")) {
+      new window.bootstrap.Collapse(nav).hide();
+    }
+  };
+
   return (
     <BrowserRouter>
-      <nav className="navbar navbar-expand-lg navbar-dark fixed-top">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div className="container-fluid">
-          <Link className="navbar-brand text-warning fw-bold fs-4" to="/Home">TastyBites</Link>
+          <Link className="navbar-brand text-warning fw-bold fs-4" to="/Home" onClick={handleNavClick}>TastyBites</Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -54,32 +66,32 @@ function App() {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link text-light d-flex align-items-center" to="/Home">
+                <Link className="nav-link text-light d-flex align-items-center" to="/Home" onClick={handleNavClick}>
                   <HomeIcon size={18} className="me-1" /> Home
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-light d-flex align-items-center" to="/Veg">
+                <Link className="nav-link text-light d-flex align-items-center" to="/Veg" onClick={handleNavClick}>
                   <Salad size={18} className="me-1" /> Veg
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-light d-flex align-items-center" to="/NonVeg">
+                <Link className="nav-link text-light d-flex align-items-center" to="/NonVeg" onClick={handleNavClick}>
                   <Drumstick size={18} className="me-1" /> Non-Veg
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-light d-flex align-items-center" to="/Drinks">
+                <Link className="nav-link text-light d-flex align-items-center" to="/Drinks" onClick={handleNavClick}>
                   <Coffee size={18} className="me-1" /> Drinks
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-light d-flex align-items-center" to="/Snacks">
+                <Link className="nav-link text-light d-flex align-items-center" to="/Snacks" onClick={handleNavClick}>
                   <Popcorn size={18} className="me-1" /> Snacks
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-light d-flex align-items-center" to="/Cart">
+                <Link className="nav-link text-light d-flex align-items-center" to="/Cart" onClick={handleNavClick}>
                   <ShoppingCart size={18} className="me-1" /> Cart
                   {cartItemCount > 0 && (
                     <span className="badge bg-warning text-dark ms-2 rounded-pill badge-animate">
@@ -89,17 +101,17 @@ function App() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-light d-flex align-items-center" to="/Order">
+                <Link className="nav-link text-light d-flex align-items-center" to="/Order" onClick={handleNavClick}>
                   <Package size={18} className="me-1" /> Order
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-light d-flex align-items-center" to="/ContactUs">
+                <Link className="nav-link text-light d-flex align-items-center" to="/ContactUs" onClick={handleNavClick}>
                   <Phone size={18} className="me-1" /> Contact
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-light d-flex align-items-center" to="/AboutUs">
+                <Link className="nav-link text-light d-flex align-items-center" to="/AboutUs" onClick={handleNavClick}>
                   <Info size={18} className="me-1" /> About
                 </Link>
               </li>

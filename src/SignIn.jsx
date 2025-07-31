@@ -3,28 +3,35 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useNavigate, Link, useLocation } from 'react-router-dom'; // ✨ FIX: Import useLocation
-import { loginUser } from './store';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { loginUser } from './store'; // Assuming 'store' contains Redux setup and actions
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import './App.css'; // Assuming App.css contains general styles
+import { ToastContainer, toast } from 'react-toastify'; // For displaying notifications
+import 'react-toastify/dist/ReactToastify.css'; // Styles for react-toastify
 
 function SignIn() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation(); // ✨ FIX: Get the location object
+  const location = useLocation();
 
   const onSubmit = (data) => {
     dispatch(loginUser(data));
-    alert("Login successful");
+    toast.success("Login successful!");
     
-    // ✨ FIX: Check for a redirect path in the state, otherwise default to '/Veg'
-    const from = location.state?.from || '/Veg';
-    navigate(from, { replace: true });
+    // Introduce a small delay to allow Redux state to update
+    setTimeout(() => {
+      // Check for a redirect path in the state, otherwise default to '/Veg'
+      // It should typically be '/Cart' if coming from checkout flow
+      const from = location.state?.from || '/Veg';
+      navigate(from, { replace: true }); // Use replace to prevent going back to SignIn/SignUp via browser back button
+    }, 100); // 100ms delay, adjust if needed
   };
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
+      <ToastContainer position="top-right" autoClose={2000} /> {/* Toast container for notifications */}
       <div className="card p-4 shadow-sm" style={{ maxWidth: '400px', width: '100%' }}>
         <h2 className="text-center mb-4">Sign In</h2>
         <form onSubmit={handleSubmit(onSubmit)}>

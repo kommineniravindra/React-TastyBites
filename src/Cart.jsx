@@ -12,7 +12,7 @@ import emailjs from "emailjs-com";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Confetti from 'react-confetti'; // ✨ Confetti library import
+import Confetti from 'react-confetti';
 
 function Cart() {
   const cartItems = useSelector((state) => state.cart);
@@ -25,11 +25,11 @@ function Cart() {
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [couponCodeDiscount, setCouponCodeDiscount] = useState(0);
   const [appliedCoupon, setAppliedCoupon] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState(null); // Initialize with null
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [purchaseComplete, setPurchaseComplete] = useState(false);
-  const [countdown, setCountdown] = useState(5); // Increased for confetti effect
+  const [countdown, setCountdown] = useState(5);
 
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -88,10 +88,13 @@ function Cart() {
       toast.error("Cart is empty!");
       return;
     }
-    // ✨ Corrected logic for unauthenticated users
     if (!isAuthenticated) {
       toast.warn("Please sign up or sign in to complete your order.");
       navigate("/SignUp", { state: { from: "/Cart" } });
+      return;
+    }
+    if (!paymentMethod) { // New validation for payment method
+      toast.error("Please select a payment method.");
       return;
     }
     if (!userEmail || !validateEmail(userEmail)) {
@@ -102,7 +105,7 @@ function Cart() {
     }
 
     toast.info("Processing your order...");
-    setPurchaseComplete(true); // This triggers the confetti screen
+    setPurchaseComplete(true);
 
     const orderData = {
       id: Date.now(),
@@ -110,6 +113,7 @@ function Cart() {
       items: [...cartItems],
       finalPrice: finalAmount.toFixed(2),
       taxAmount: taxAmount.toFixed(2),
+      paymentMethod: paymentMethod.toUpperCase(), // Add payment method to order data
     };
 
     const formattedItems = cartItems.map((item) => ({
@@ -144,6 +148,7 @@ function Cart() {
       total_quantity: totalQuantity,
       email: userEmail,
       logo: "",
+      payment_method: paymentMethod.toUpperCase(), // Add payment method to email template
     };
 
     setTimeout(() => {
@@ -181,7 +186,6 @@ function Cart() {
   if (purchaseComplete) {
     return (
       <>
-        {/* ✨ Confetti effect on purchase */}
         <Confetti
           width={window.innerWidth}
           height={window.innerHeight}
@@ -321,6 +325,8 @@ function Cart() {
                   <div className="d-grid gap-2">
                     <button onClick={() => handlePaymentMethodClick("qr")} className={`btn ${paymentMethod === "qr" ? "btn-primary" : "btn-outline-primary"}`}>QR Code</button>
                     <button onClick={() => handlePaymentMethodClick("card")} className={`btn ${paymentMethod === "card" ? "btn-primary" : "btn-outline-primary"}`}>Card</button>
+                    {/* New COD Button */}
+                    <button onClick={() => handlePaymentMethodClick("cod")} className={`btn ${paymentMethod === "cod" ? "btn-primary" : "btn-outline-primary"}`}>Cash on Delivery</button>
                   </div>
                 </div>
 
@@ -345,6 +351,13 @@ function Cart() {
                   </div>
                 )}
                 
+                {paymentMethod === "cod" && (
+                  <div className="p-3 border rounded mb-3 text-center">
+                    <p className="mb-0">You have selected Cash on Delivery.</p>
+                    <p className="mb-0">Please be ready with ₹{finalAmount.toFixed(2)} at the time of delivery.</p>
+                  </div>
+                )}
+
                 <div className="d-grid">
                     <button className="btn btn-success btn-lg" onClick={handleCompletePurchase}>
                     Check Out
