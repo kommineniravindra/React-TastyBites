@@ -17,7 +17,7 @@ const AboutUs = () => {
       title: 'Secure Payments',
       desc: 'Payments powered by Razorpay & QR Code scan.',
       badge: 'Active',
-      color: 'primary',
+      color: 'primary',    
     },
     {
       icon: 'fas fa-tags',
